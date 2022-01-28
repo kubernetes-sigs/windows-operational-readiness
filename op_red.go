@@ -1,31 +1,43 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os/exec"
 	"strings"
+
+	"go.uber.org/zap"
+	"gopkg.in/yaml.v2"
 )
 
-type Test struct {
-	focus string `json:"focus"`
-	skip string `json:"skip"`
+type OpTestConfig struct {
+	OpTestCases []OpTestCase `yaml:"testCases"`
 }
 
-func ReadTests() map[string]map[string]string {
+type OpTestCase struct {
+	TestName           string   `yaml:"testName"`
+	Focus              []string `yaml:"focus,omitempty"`
+	Skip               []string `yaml:"skip,omitempty"`
+	KubernetesVersions []string `yaml:"kubernetesVersions,omitempty"`
+	WindowsPodImage    string   `yaml:"windowsPodImage,omitempty"`
+	LinuxPodImage      string   `yaml:"linuxPodImage,omitempty"`
+	TestDescription    string   `yaml:"operationalReadinessDescription,omitempty"`
+}
 
-	bytes := []byte(`{"Core":{ "focus":"windows", "skip": "gmsa"},"Networking":{ "focus":"NetworkPolicy", "skip": "6|udp" }}`)
-	var dat map[string]map[string]string
-
-	if err := json.Unmarshal(bytes, &dat); err != nil {
-		panic(err)
+func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig) {
+	inputFile, err := ioutil.ReadFile(inputYamlFile)
+	if err != nil {
+		zap.L().Error(fmt.Sprintf("Input yaml file load failed, %v", err))
+		return nil
 	}
-	fmt.Println(dat)
-	return dat
+	if err := yaml.Unmarshal(inputFile, &opTestConfig); err != nil {
+		zap.L().Error(fmt.Sprintf("Input yaml file unmarshal failed, %v", err))
+		return nil
+	}
+	return
 }
 
-
-func runTest(t map[string]string) (string, error){
+func runTest(opTestCase OpTestCase) (string, error) {
 	args := []string{
 		"--ginkgo.v=true",
 		"--ginkgo.debug=true",
@@ -36,26 +48,26 @@ func runTest(t map[string]string) (string, error){
 		"--ginkgo.noColor=true",
 		"--non-blocking-taints=\"os,node-role.kubernetes.io/master,node.kubernetes.io/not-ready\"",
 	}
-	argsUsed := fmt.Sprintf(strings.Join(args, " "), t["focus"], t["skip"])
+	argsUsed := fmt.Sprintf(strings.Join(args, " "), opTestCase.Focus, opTestCase.Skip)
 
 	split := strings.Split(argsUsed, " ")
 
-	// date
 	fmt.Println(argsUsed)
-	runme := exec.Command("./e2e.test", split...)
+	// TODO(iXinqi): replace the placeholder
+	runme := exec.Command("./xxx", split...)
 	out, err := runme.CombinedOutput()
 	return string(out), err
 
 }
 
 func main() {
-	tests := ReadTests()
+	opTestConfig := NewOpTestConfig("./example_input.yaml")
 
-	for n,t := range tests {
-		s := fmt.Sprintf("Operational Readiness: %v", n)
-		fmt.Println(s)
-		o, e := runTest(t)
-		fmt.Println(o)
-		fmt.Println(e)
+	for i, c := range opTestConfig.OpTestCases {
+		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.TestName))
+		// o, e := runTest(c)
+		// fmt.Println(o)
+		// fmt.Println(e)
+		fmt.Println(c.TestName)
 	}
 }

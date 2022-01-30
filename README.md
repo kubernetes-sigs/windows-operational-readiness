@@ -5,7 +5,7 @@ contact jayunit100 on upstream k8s.io slack !
 
 To specify your windows cluster's readiness to run workflows:
 
-- define the spec.json (you can use the example here as a template).
+- define the example_input.yaml (you can use the example here as a template).
 - run the golang program in this repository.
 
 For customization of your specification, see https://github.com/kubernetes/enhancements/pull/2975. 
@@ -13,3 +13,9 @@ For customization of your specification, see https://github.com/kubernetes/enhan
 ## First prototype
 
 https://github.com/jayunit100/k8sprototypes/tree/master/windows/op-readiness
+
+## Build and run - development
+
+```
+$ make local-kind-test IMG_REPO=<a repo to store op-readiness docker image>
+```

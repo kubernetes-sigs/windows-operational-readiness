@@ -1,0 +1,376 @@
+kubernetesVersions:
+- 1.23
+- 1.22
+
+testCases:
+  - category: Core.Network
+    description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+    kubernetesVersions:
+    - 1.21
+  - category: Core.Network
+    description: Ability to access Windows container IPs by service IP (ClusterIP) from
+      Linux containers
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Agnhost
+  - category: Core.Network
+    description: Ability to access Linux container IPs by NodePort IP from Windows containers
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Network
+    description: Ability to access Windows container IPs by NodePort IP from Linux containers
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Agnhost
+  - category: Core.Network
+    description: Ability to access Linux container IPs by pod IP from Windows containers
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Network
+    description: Ability to access Windows container IPs by pod IP from Linux containers
+    focus:
+    - ''
+    linux_image: Nginx
+    skip:
+    - ''
+    windows_image: Agnhost
+  - category: Core.Network
+    description: Ability to schedule multiple containers, with distinct IP addresses,
+      on the same node.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: busybox
+  - category: Core.Network
+    description: Ability to delete and recreate services in such a way that load balancing
+      rules for pods are recovered by whatever chosen service proxy is being utilized.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Network
+    description: Ability to delete and recreate pods for StatefulSets which preserve
+      their ability to serve as routed endpoints for services, while also having unchanging
+      IP addresses.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Network
+    description: Ability to access internal pods by internal Kubernetes DNS service
+      endpoints.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to access external services by Kubernetes DNS services endpoints
+      (for non-airgapped clusters).
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to access internal pods through custom DNS records, injected
+      by the Kubernetes pod Specification.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to route services from pods from the EndpointSlice API.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Storage
+    description: Ability to reboot all of the Windows nodes in a cluster while running
+      Windows pods, in such a way that recovery of these deleted pods occurs in the
+      scope of a few minutes.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Agnhost, host-process pod
+  - category: Core.Storage
+    description: Ability to mount a hostPath storage volume from a Kubelet into a pod
+      and write to it.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Pause
+  - category: Core.Storage
+    description: Ability to mount a hostPath storage volume from a Kubelet into a pod
+      and read from it.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Pause
+  - category: Core.Storage
+    description: Ability to mount host volumes
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Pause
+  - category: Core.Storage
+    description: Ability to rotate service accounts for running pods, with the APIServer
+      access capacity of the pod remaining unchanged over the long term.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Storage
+    description: Ability to read and write shared files on a single Kubernetes node
+      between three running Windows containers, simultaneously.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Scheduling
+    description: Ability to schedule pods with CPU and Memory limits demonstrably honored
+      over time.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost:2.21
+  - category: Core.Scheduling
+    description: Ability to demonstrate the pods requesting more CPU and Memory then
+      available are left in the Pending state over time.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Concurrent
+    description: Ability to reschedule a deployment Pod, 50 times in a row, with continuous
+      deletions in the background.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Concurrent
+    description: Ability to route traffic to 10 pods behind a common ClusterIP service
+      endpoint.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Concurrent
+    description: Ability to route traffic to 10 pods behind a common NodePort service
+      endpoint.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: Ability to access the APIServer using pod mounted service accounts
+      from a hostProcess pod.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: Ability to create and manage host level networking (hcn) rules from
+      a Windows hostProcess pod.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: Ability to launch hostProcess containers which share the IP address   of a Windows node.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: Ability to launch hostProcess containers which can run other privileged Windows system API (to be specified further in the future).
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: 'Ability for pods to bind to host network interfaces on windows (requires hostProcess pods for scheduling the pod itself).'
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.HostProcess
+    description: 'Ability for nodes to continue participating in a K8s cluster after rebooting (requires hostProcess pods for testing).'
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ActiveDirectory
+    description: Ability to utilize NT Authority/Network Service should be able to interact
+      with host network objects
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ActiveDirectory
+    description: Ability to run a pod as a GMSA User with only be able to access allowed
+      resources
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ActiveDirectory
+    description: Ability to read and write from local storage using ActiveDirectory
+      credentials
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ActiveDirectory
+    description: The behavior of the `RunAsUserName` field for Windows pods should be
+      that it is supported (i.e. pods can use this), but that there are no guarantees
+      around volume permissions and access when using this field.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ActiveDirectory
+    description: Observed lack of Ability to read and write from local storage when
+      ActiveDirectory protected resources credentials are not present
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.NetworkPolicy
+    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+      are present that block specific pod connectivity.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.NetworkPolicy
+    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+      are present that block specific namespace connectibity.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ServiceProxy
+    description: Ability to support IPv6 and IPv4 services for accessing internal Linux
+      pods from Windows pods over ClusterIP Endpoints.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ServiceProxy
+    description: Ability to support IPv6 and IPv4 services for accessing internal Linux
+      pods from Windows pods over NodePort Endpoints.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ServiceProxy
+    description: Ability to support IPv6 and IPv4 services for accessing internal Windows
+      pods from Linux pods over ClusterIP Endpoints.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ServiceProxy
+    description: Ability to support IPv6 and IPv4 services for accessing internal Windows
+      pods from Linux pods over NodePort Endpoints.
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Extend.ServiceProxy
+    description: Ability to run IPv4/IPv6 dual-stack networking (on supported OS Versions)
+    focus:
+    - ''
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost

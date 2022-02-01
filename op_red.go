@@ -15,13 +15,13 @@ type OpTestConfig struct {
 }
 
 type OpTestCase struct {
-	TestName           string   `yaml:"testName"`
+	Category           string   `yaml:"category"`
 	Focus              []string `yaml:"focus,omitempty"`
 	Skip               []string `yaml:"skip,omitempty"`
 	KubernetesVersions []string `yaml:"kubernetesVersions,omitempty"`
-	WindowsPodImage    string   `yaml:"windowsPodImage,omitempty"`
-	LinuxPodImage      string   `yaml:"linuxPodImage,omitempty"`
-	TestDescription    string   `yaml:"operationalReadinessDescription,omitempty"`
+	WindowsPodImage    string   `yaml:"windows_image,omitempty"`
+	LinuxPodImage      string   `yaml:"linux_image,omitempty"`
+	Description        string   `yaml:"description,omitempty"`
 }
 
 func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig) {
@@ -61,13 +61,13 @@ func runTest(opTestCase OpTestCase) (string, error) {
 }
 
 func main() {
-	opTestConfig := NewOpTestConfig("./example_input.yaml")
+	opTestConfig := NewOpTestConfig("./tests.yaml")
 
 	for i, c := range opTestConfig.OpTestCases {
-		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.TestName))
+		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.Category))
 		// o, e := runTest(c)
 		// fmt.Println(o)
 		// fmt.Println(e)
-		fmt.Println(c.TestName)
+		fmt.Println(c.Category, c.Description)
 	}
 }

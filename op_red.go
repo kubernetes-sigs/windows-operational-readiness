@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os/exec"
@@ -8,6 +9,9 @@ import (
 
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
+
+	"k8s.io/kubernetes/test/e2e/framework"
+	"k8s.io/kubernetes/test/e2e/framework/config"
 )
 
 type OpTestConfig struct {
@@ -39,35 +43,46 @@ func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig) {
 
 func runTest(opTestCase OpTestCase) (string, error) {
 	args := []string{
-		"--ginkgo.v=true",
-		"--ginkgo.debug=true",
-		"--kubeconfig=/home/kubo/.kube/config",
-		"--ginkgo.focus=%v",
-		"--node-os-distro=windows",
-		"--ginkgo.skip=%v",
-		"--ginkgo.noColor=true",
-		"--non-blocking-taints=\"os,node-role.kubernetes.io/master,node.kubernetes.io/not-ready\"",
+		"--provider=%v",
+		"--kubeconfig=%v",
+		"--ginkgo.focus=\"should deny ingress from pods on other namespaces\"",
+		"--ginkgo.skip=\"Driver|Slow|Driver\"",
+		"--ginkgo.dryRun=true",
+		// "--node-os-distro=windows",
 	}
-	argsUsed := fmt.Sprintf(strings.Join(args, " "), opTestCase.Focus, opTestCase.Skip)
+	// argsUsed := fmt.Sprintf(strings.Join(args, " "), framework.TestContext.Provider, framework.TestContext.KubeConfig, opTestCase.Focus, opTestCase.Skip)
+	argsUsed := fmt.Sprintf(strings.Join(args, " "), framework.TestContext.Provider, framework.TestContext.KubeConfig)
 
 	split := strings.Split(argsUsed, " ")
 
 	fmt.Println(argsUsed)
-	// TODO(iXinqi): replace the placeholder
-	runme := exec.Command("./xxx", split...)
+	runme := exec.Command("./e2e.test", split...)
 	out, err := runme.CombinedOutput()
 	return string(out), err
 
 }
 
+
+func handleFlags() {
+	// handleFlags sets up all flags and parses the command line.
+	config.CopyFlags(config.Flags, flag.CommandLine)
+	framework.RegisterCommonFlags(flag.CommandLine)
+	framework.RegisterClusterFlags(flag.CommandLine)
+	flag.Parse()
+}
+
 func main() {
+
+	// Register test flags, then parse flags.
+	handleFlags()
+
 	opTestConfig := NewOpTestConfig("./tests.yaml")
 
 	for i, c := range opTestConfig.OpTestCases {
 		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.Category))
-		// o, e := runTest(c)
-		// fmt.Println(o)
-		// fmt.Println(e)
+		o, e := runTest(c)
+		fmt.Println(o)
+		fmt.Println(e)
 		fmt.Println(c.Category, c.Description)
 	}
 }

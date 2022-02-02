@@ -10,8 +10,6 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
 
-	"k8s.io/kubernetes/test/e2e/framework"
-	"k8s.io/kubernetes/test/e2e/framework/config"
 )
 
 type OpTestConfig struct {
@@ -51,7 +49,7 @@ func runTest(opTestCase OpTestCase) (string, error) {
 		// "--node-os-distro=windows",
 	}
 	// argsUsed := fmt.Sprintf(strings.Join(args, " "), framework.TestContext.Provider, framework.TestContext.KubeConfig, opTestCase.Focus, opTestCase.Skip)
-	argsUsed := fmt.Sprintf(strings.Join(args, " "), framework.TestContext.Provider, framework.TestContext.KubeConfig)
+	argsUsed := fmt.Sprintf(strings.Join(args, " "), TestContext.Provider, TestContext.KubeConfig)
 
 	split := strings.Split(argsUsed, " ")
 
@@ -62,12 +60,9 @@ func runTest(opTestCase OpTestCase) (string, error) {
 
 }
 
-
 func handleFlags() {
 	// handleFlags sets up all flags and parses the command line.
-	config.CopyFlags(config.Flags, flag.CommandLine)
-	framework.RegisterCommonFlags(flag.CommandLine)
-	framework.RegisterClusterFlags(flag.CommandLine)
+	RegisterClusterFlags(flag.CommandLine)
 	flag.Parse()
 }
 

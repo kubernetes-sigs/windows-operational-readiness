@@ -7,9 +7,9 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
-
 )
 
 type OpTestConfig struct {
@@ -17,7 +17,7 @@ type OpTestConfig struct {
 }
 
 type OpTestCase struct {
-	Category           string   `yaml:"category"`
+	Category           string   `yaml:"category,omitempty"`
 	Focus              []string `yaml:"focus,omitempty"`
 	Skip               []string `yaml:"skip,omitempty"`
 	KubernetesVersions []string `yaml:"kubernetesVersions,omitempty"`
@@ -26,17 +26,42 @@ type OpTestCase struct {
 	Description        string   `yaml:"description,omitempty"`
 }
 
-func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig) {
+func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig, err error) {
 	inputFile, err := ioutil.ReadFile(inputYamlFile)
 	if err != nil {
 		zap.L().Error(fmt.Sprintf("Input yaml file load failed, %v", err))
-		return nil
+		return nil, err
 	}
 	if err := yaml.Unmarshal(inputFile, &opTestConfig); err != nil {
 		zap.L().Error(fmt.Sprintf("Input yaml file unmarshal failed, %v", err))
-		return nil
+		return nil, err
 	}
-	return
+	validate := validator.New()
+	validate.RegisterStructValidation(OpTestConfigValidation, OpTestConfig{})
+	if err := validate.Struct(opTestConfig); err != nil {
+		return nil, err
+	}
+	return opTestConfig, nil
+}
+
+func OpTestConfigValidation(sl validator.StructLevel) {
+
+	opTestConfig := sl.Current().Interface().(OpTestConfig)
+
+	for _, opTestCase := range opTestConfig.OpTestCases {
+		if opTestCase.Category == "" {
+			fmt.Println("Category Required")
+			sl.ReportError(opTestCase.Category, "category", "Category", "categoryRequired", "")
+		}
+		if opTestCase.Description == "" {
+			fmt.Println("Description Required")
+			sl.ReportError(opTestCase.Description, "description", "Description", "descriptionRequired", "")
+		}
+		if len(opTestCase.Focus) == 0 || (len(opTestCase.Focus) == 1 && len(opTestCase.Focus[0]) == 0) {
+			fmt.Println("Focus Required")
+			sl.ReportError(opTestCase.Focus, "focus", "Focus", "focusRequired", "")
+		}
+	}
 }
 
 func runTest(opTestCase OpTestCase) (string, error) {
@@ -71,7 +96,10 @@ func main() {
 	// Register test flags, then parse flags.
 	handleFlags()
 
-	opTestConfig := NewOpTestConfig("./tests.yaml")
+	opTestConfig, err := NewOpTestConfig("./tests.yaml")
+	if err != nil {
+		return
+	}
 
 	for i, c := range opTestConfig.OpTestCases {
 		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.Category))

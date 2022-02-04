@@ -10,3 +10,8 @@ local-kind-test: docker-build
 docker-build:
 	docker build -t ${IMG_REPO}/${IMG_NAME}:${IMG_TAG} .
 	docker push ${IMG_REPO}/${IMG_NAME}:${IMG_TAG}
+
+.PHONY: build
+build: 
+	./build_k8s_test_binary.sh
+	go build -o ./op-readiness .

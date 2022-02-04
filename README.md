@@ -17,5 +17,6 @@ https://github.com/jayunit100/k8sprototypes/tree/master/windows/op-readiness
 ## Build and run - development
 
 ```
-$ make local-kind-test IMG_REPO=<a repo to store op-readiness docker image>
+$ make build-test
+$ ./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig>
 ```

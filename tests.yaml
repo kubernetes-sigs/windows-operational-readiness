@@ -3,16 +3,16 @@ kubernetesVersions:
 - 1.22
 
 testCases:
-  - category: Core.Network
-    description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
-    focus:
-    - 'should be able to up and down services'
-    linux_image: .nan
-    skip:
-    - ''
-    windows_image: .nan
-    kubernetesVersions:
-    - 1.21
+  # - category: Core.Network
+  #   description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
+  #   focus:
+  #   - ''
+  #   linux_image: .nan
+  #   skip:
+  #   - ''
+  #   windows_image: .nan
+  #   kubernetesVersions:
+  #   - 1.21
   # - category: Core.Network
   #   description: Ability to access Windows container IPs by service IP (ClusterIP) from
   #     Linux containers
@@ -321,15 +321,15 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.NetworkPolicy
-  #   description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
-  #     are present that block specific namespace connectibity.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
+  - category: Extend.NetworkPolicy
+    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+      are present that block specific namespace connectibity.
+    focus:
+    - 'should deny ingress from pods on other namespaces'
+    linux_image: .nan
+    skip:
+    - 'Driver|Slow|Driver'
+    windows_image: .nan
   # - category: Extend.ServiceProxy
   #   description: Ability to support IPv6 and IPv4 services for accessing internal Linux
   #     pods from Windows pods over ClusterIP Endpoints.

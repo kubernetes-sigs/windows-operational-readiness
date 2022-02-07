@@ -18,5 +18,10 @@ https://github.com/jayunit100/k8sprototypes/tree/master/windows/op-readiness
 
 ```
 $ make build-test
+
+# run on linux
 $ ./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig>
+
+# run on darwin
+$ ./op-readiness --os=darwin --provider=local --kubeconfig=<path-to-kubeconfig>
 ```

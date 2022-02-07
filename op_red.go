@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os/exec"
-	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -65,21 +64,7 @@ func OpTestConfigValidation(sl validator.StructLevel) {
 }
 
 func runTest(opTestCase OpTestCase) (string, error) {
-	args := []string{
-		"--provider=%v",
-		"--kubeconfig=%v",
-		"--ginkgo.focus=\"should deny ingress from pods on other namespaces\"",
-		"--ginkgo.skip=\"Driver|Slow|Driver\"",
-		"--ginkgo.dryRun=true",
-		// "--node-os-distro=windows",
-	}
-	// argsUsed := fmt.Sprintf(strings.Join(args, " "), framework.TestContext.Provider, framework.TestContext.KubeConfig, opTestCase.Focus, opTestCase.Skip)
-	argsUsed := fmt.Sprintf(strings.Join(args, " "), TestContext.Provider, TestContext.KubeConfig)
-
-	split := strings.Split(argsUsed, " ")
-
-	fmt.Println(argsUsed)
-	runme := exec.Command("./e2e.test", split...)
+	runme := exec.Command("./e2e_test_binary/" + TestContext.OS + "/e2e.test", "--provider", TestContext.Provider, "--kubeconfig", TestContext.KubeConfig, "--ginkgo.focus", opTestCase.Focus[0], "--ginkgo.skip", opTestCase.Skip[0])
 	out, err := runme.CombinedOutput()
 	return string(out), err
 

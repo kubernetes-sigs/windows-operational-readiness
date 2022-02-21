@@ -4,7 +4,7 @@ IMG_TAG ?= dev
 
 .PHONY: local-kind-test
 local-kind-test: docker-build
-	./kind_run.sh ${IMG_REPO} ${IMG_NAME} ${IMG_TAG}
+	./hack/kind_run.sh ${IMG_REPO} ${IMG_NAME} ${IMG_TAG}
 
 .PHONY: docker-build
 docker-build:
@@ -13,5 +13,5 @@ docker-build:
 
 .PHONY: build
 build: 
-	./build_k8s_test_binary.sh
+	./hack/build_k8s_test_binary.sh
 	go build -o ./op-readiness .

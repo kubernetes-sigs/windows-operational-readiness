@@ -25,3 +25,18 @@ $ ./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig>
 # run on darwin
 $ ./op-readiness --os=darwin --provider=local --kubeconfig=<path-to-kubeconfig>
 ```
+
+## Running tests from a category
+
+Tests categories can be passed in the flag `--category`, this allows users to pick a category of tests by run.
+To run ALL tests do not pass the flag.
+
+```
+./op-readiness --category core --category networkpolicy
+
+core Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
+...
+core Ability to access Windows container IPs by service IP (ClusterIP) from Linux containers
+...
+core Ability to access Linux container IPs by NodePort IP from Windows containers
+```

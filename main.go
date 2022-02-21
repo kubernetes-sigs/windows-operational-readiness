@@ -44,7 +44,6 @@ func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig, err erro
 }
 
 func OpTestConfigValidation(sl validator.StructLevel) {
-
 	opTestConfig := sl.Current().Interface().(OpTestConfig)
 
 	for _, opTestCase := range opTestConfig.OpTestCases {
@@ -63,21 +62,7 @@ func OpTestConfigValidation(sl validator.StructLevel) {
 	}
 }
 
-func runTest(opTestCase OpTestCase) (string, error) {
-	runme := exec.Command("./e2e_test_binary/" + TestContext.OS + "/e2e.test", "--provider", TestContext.Provider, "--kubeconfig", TestContext.KubeConfig, "--ginkgo.focus", opTestCase.Focus[0], "--ginkgo.skip", opTestCase.Skip[0])
-	out, err := runme.CombinedOutput()
-	return string(out), err
-
-}
-
-func handleFlags() {
-	// handleFlags sets up all flags and parses the command line.
-	RegisterClusterFlags(flag.CommandLine)
-	flag.Parse()
-}
-
 func main() {
-
 	// Register test flags, then parse flags.
 	handleFlags()
 
@@ -87,10 +72,42 @@ func main() {
 	}
 
 	for i, c := range opTestConfig.OpTestCases {
+		if !categoryEnabled(c.Category) {
+			continue
+		}
+
 		zap.L().Error(fmt.Sprintf("Starting Operational Readiness Test %v / %v : %v", i, len(opTestConfig.OpTestCases), c.Category))
 		o, e := runTest(c)
 		fmt.Println(o)
 		fmt.Println(e)
 		fmt.Println(c.Category, c.Description)
 	}
+}
+
+func runTest(opTestCase OpTestCase) (string, error) {
+	runme := exec.Command("./e2e_test_binary/"+TestContext.OS+"/e2e.test", "--provider", TestContext.Provider, "--kubeconfig", TestContext.KubeConfig, "--ginkgo.focus", opTestCase.Focus[0], "--ginkgo.skip", opTestCase.Skip[0])
+	out, err := runme.CombinedOutput()
+	return string(out), err
+
+}
+
+// handleFlags sets up all flag and parses the command line.
+func handleFlags() {
+	RegisterClusterFlags(flag.CommandLine)
+	flag.Parse()
+}
+
+// categoryEnabled returns a boolean indicating the test category was passed on flags
+func categoryEnabled(category string) bool {
+	// when no categories on flags, set as ALL
+	if len(categoryFlags) == 0 {
+		return true
+	}
+
+	for _, cat := range categoryFlags {
+		if cat == category {
+			return true
+		}
+	}
+	return false
 }

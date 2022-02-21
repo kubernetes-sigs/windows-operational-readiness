@@ -3,33 +3,33 @@ kubernetesVersions:
 - 1.22
 
 testCases:
-  # - category: Core.Network
-  #   description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
-  #   kubernetesVersions:
-  #   - 1.21
-  # - category: Core.Network
-  #   description: Ability to access Windows container IPs by service IP (ClusterIP) from
-  #     Linux containers
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: Agnhost
-  # - category: Core.Network
-  #   description: Ability to access Linux container IPs by NodePort IP from Windows containers
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
+  - category: core
+    description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
+    focus:
+    - 'sadf'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+    kubernetesVersions:
+    - 1.21
+  - category: core
+    description: Ability to access Windows container IPs by service IP (ClusterIP) from
+      Linux containers
+    focus:
+    - 'we'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Agnhost
+  - category: core
+    description: Ability to access Linux container IPs by NodePort IP from Windows containers
+    focus:
+    - 'qweqwe'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
   # - category: Core.Network
   #   description: Ability to access Windows container IPs by NodePort IP from Linux containers
   #   focus:
@@ -266,7 +266,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.ActiveDirectory
+  # - category: activedirectory
   #   description: Ability to utilize NT Authority/Network Service should be able to interact
   #     with host network objects
   #   focus:
@@ -275,7 +275,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.ActiveDirectory
+  # - category: activedirectory
   #   description: Ability to run a pod as a GMSA User with only be able to access allowed
   #     resources
   #   focus:
@@ -284,7 +284,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.ActiveDirectory
+  # - category: activedirectory
   #   description: Ability to read and write from local storage using ActiveDirectory
   #     credentials
   #   focus:
@@ -293,7 +293,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.ActiveDirectory
+  # - category: activedirectory
   #   description: The behavior of the `RunAsUserName` field for Windows pods should be
   #     that it is supported (i.e. pods can use this), but that there are no guarantees
   #     around volume permissions and access when using this field.
@@ -303,7 +303,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.ActiveDirectory
+  # - category: activedirectory
   #   description: Observed lack of Ability to read and write from local storage when
   #     ActiveDirectory protected resources credentials are not present
   #   focus:
@@ -312,16 +312,16 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Extend.NetworkPolicy
-  #   description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
-  #     are present that block specific pod connectivity.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
-  - category: Extend.NetworkPolicy
+  - category: networkpolicy
+    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+      are present that block specific pod connectivity.
+    focus:
+    - 'sdfadf'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: networkpolicy
     description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
       are present that block specific namespace connectibity.
     focus:

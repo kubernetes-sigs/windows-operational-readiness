@@ -85,7 +85,7 @@ func main() {
 }
 
 func runTest(opTestCase OpTestCase) (string, error) {
-	runme := exec.Command("./e2e_test_binary/"+TestContext.OS+"/e2e.test", "--provider", TestContext.Provider, "--kubeconfig", TestContext.KubeConfig, "--ginkgo.focus", opTestCase.Focus[0], "--ginkgo.skip", opTestCase.Skip[0])
+	runme := exec.Command("./e2e_test_binary/"+TestContext.OS+"/e2e.test", "--provider", TestContext.Provider, "--kubeconfig", TestContext.KubeConfig, "--ginkgo.focus", opTestCase.Focus[0], "--ginkgo.skip", opTestCase.Skip[0], "--node-os-distro", "windows", "--non-blocking-taints", "os")
 	out, err := runme.CombinedOutput()
 	return string(out), err
 

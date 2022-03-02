@@ -275,24 +275,22 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: activedirectory
-  #   description: Ability to run a pod as a GMSA User with only be able to access allowed
-  #     resources
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
-  # - category: activedirectory
-  #   description: Ability to read and write from local storage using ActiveDirectory
-  #     credentials
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: .nan
+  - category: activedirectory
+    description: Ability to read and write files as a GMSA User
+    focus:
+    - 'can read and write file to remote folder'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: activedirectory
+    description: Ability to run a pod as a GMSA User and verify if it can connect to the domain successfully
+    focus:
+    - 'works end to end'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
   # - category: activedirectory
   #   description: The behavior of the `RunAsUserName` field for Windows pods should be
   #     that it is supported (i.e. pods can use this), but that there are no guarantees

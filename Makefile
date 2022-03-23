@@ -15,3 +15,9 @@ docker-build:
 build: 
 	./hack/build_k8s_test_binary.sh
 	go build -o ./op-readiness .
+
+.PHONY: sonobuoy-plugin
+sonobuoy-plugin:
+	sonobuoy delete
+	sonobuoy run --plugin sonobuoy-plugin.yaml
+

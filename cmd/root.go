@@ -51,11 +51,7 @@ var (
 				}
 
 				zap.L().Info(fmt.Sprintf("Running Operational Readiness Test %v / %v : %v on %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
-				output, err := t.RunTest(testCtx)
-				if err != nil {
-					zap.L().Fatal("Test case failed with: ", zap.String("error", err.Error()))
-				}
-				zap.L().Info(output)
+				t.RunTest(testCtx)
 			}
 		},
 	}

@@ -127,24 +127,18 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: Agnhost, host-process pod
-  # - category: Core.Storage
-  #   description: Ability to mount a hostPath storage volume from a Kubelet into a pod
-  #     and write to it.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: Pause
-  # - category: Core.Storage
-  #   description: Ability to mount a hostPath storage volume from a Kubelet into a pod
-  #     and read from it.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: Pause
+  - category: Core.Storage
+    description: Ability to mount a hostPath storage volume from a Kubelet into a pod.
+    focus:
+    - 'HostPathType Directory'
+    - 'HostPathType File'
+    - 'HostPathType Socket'
+    - 'HostPathType Character Device'
+    - 'HostPathType Block Device'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Pause
   # - category: Core.Storage
   #   description: Ability to mount host volumes
   #   focus:

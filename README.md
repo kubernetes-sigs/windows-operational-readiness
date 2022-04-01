@@ -47,11 +47,25 @@ We support an OCI image and a Sonobuoy plugin, so the user don't need to compile
 by default the latest version of the E2E binary is builtin the image, if you need to add a custom file
 just mount your local version in the plugin at `/app/e2e.test`.
 
+Before running sonobuoy, taint the windows worker node. Sonobuoy pod should be scheduled on the control plane node:
+
+```
+kubectl taint node <windows-worker-node> sonobuoy:NoSchedule
+```
+
 To run the plugin with the default image:
 
 ```
 make sonobuoy-plugin
 ```
+
+To retrieve the sonobuoy result:
+
+```
+make sonobuoy-results
+```
+
+The result can be found in the `./sonobuoy-results` folder.
 
 ### Settings a particular category
 

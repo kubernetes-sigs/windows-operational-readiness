@@ -19,5 +19,10 @@ build:
 .PHONY: sonobuoy-plugin
 sonobuoy-plugin:
 	sonobuoy delete
-	sonobuoy run --plugin sonobuoy-plugin.yaml
+	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.3 --plugin sonobuoy-plugin.yaml --wait
 
+sonobuoy-results:
+	rm -rf sonobuoy-results
+	mkdir sonobuoy-results
+	$(eval OUTPUT=$(shell sonobuoy retrieve))
+	tar -xf $(OUTPUT) -C sonobuoy-results

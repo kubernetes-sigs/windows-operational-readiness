@@ -3,41 +3,39 @@ kubernetesVersions:
 - 1.22
 
 testCases:
-  - category: core
+  - category: Core.Network
     description: Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
     focus:
-    - 'sadf'
+    - 'should be able to up and down services'
     linux_image: .nan
     skip:
     - ''
     windows_image: .nan
-    kubernetesVersions:
-    - 1.21
-  - category: core
+  - category: Core.Network
     description: Ability to access Windows container IPs by service IP (ClusterIP) from
       Linux containers
     focus:
-    - 'we'
+    - 'should be able to up and down services'
     linux_image: .nan
     skip:
     - ''
     windows_image: Agnhost
-  - category: core
-    description: Ability to access Linux container IPs by NodePort IP from Windows containers
-    focus:
-    - 'qweqwe'
-    linux_image: .nan
-    skip:
-    - ''
-    windows_image: .nan
   # - category: Core.Network
-  #   description: Ability to access Windows container IPs by NodePort IP from Linux containers
+  #   description: Ability to access Linux container IPs by NodePort IP from Windows containers
   #   focus:
-  #   - ''
+  #   - 'qweqwe'
   #   linux_image: .nan
   #   skip:
   #   - ''
-  #   windows_image: Agnhost
+  #   windows_image: .nan
+  - category: Core.Network
+    description: Ability to access Windows container IPs by NodePort IP from Linux containers
+    focus:
+    - 'should be able to create a functioning NodePort service for Windows'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: Agnhost
   # - category: Core.Network
   #   description: Ability to access Linux container IPs by pod IP from Windows containers
   #   focus:
@@ -46,23 +44,23 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Core.Network
-  #   description: Ability to access Windows container IPs by pod IP from Linux containers
-  #   focus:
-  #   - ''
-  #   linux_image: Nginx
-  #   skip:
-  #   - ''
-  #   windows_image: Agnhost
-  # - category: Core.Network
-  #   description: Ability to schedule multiple containers, with distinct IP addresses,
-  #     on the same node.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: busybox
+  - category: Core.Network
+    description: Ability to access Windows container IPs by pod IP from Linux containers
+    focus:
+    - 'should have stable networking for Linux and Windows pods'
+    linux_image: Nginx
+    skip:
+    - ''
+    windows_image: Agnhost
+  - category: Core.Network
+    description: Ability to schedule multiple containers, with distinct IP addresses,
+      on the same node.
+    focus:
+    - 'Kubelet stats collection for Windows nodes when running 10 pods should return within 10 seconds'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: busybox
   # - category: Core.Network
   #   description: Ability to delete and recreate services in such a way that load balancing
   #     rules for pods are recovered by whatever chosen service proxy is being utilized.
@@ -82,33 +80,33 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: Core.Network
-  #   description: Ability to access internal pods by internal Kubernetes DNS service
-  #     endpoints.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: agnhost & jessie-dnsutils
-  # - category: Core.Network
-  #   description: Ability to access external services by Kubernetes DNS services endpoints
-  #     (for non-airgapped clusters).
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: agnhost & jessie-dnsutils
-  # - category: Core.Network
-  #   description: Ability to access internal pods through custom DNS records, injected
-  #     by the Kubernetes pod Specification.
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to access internal pods by internal Kubernetes DNS service
+      endpoints.
+    focus:
+    - 'should provide DNS for the cluster'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to access external services by Kubernetes DNS services endpoints
+      (for non-airgapped clusters).
+    focus:
+    - 'should provide DNS for ExternalName services'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
+  - category: Core.Network
+    description: Ability to access internal pods through custom DNS records, injected
+      by the Kubernetes pod Specification.
+    focus:
+    - 'should provide DNS for services'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: agnhost & jessie-dnsutils
   # - category: Core.Network
   #   description: Ability to route services from pods from the EndpointSlice API.
   #   focus:
@@ -132,9 +130,6 @@ testCases:
     focus:
     - 'HostPathType Directory'
     - 'HostPathType File'
-    - 'HostPathType Socket'
-    - 'HostPathType Character Device'
-    - 'HostPathType Block Device'
     linux_image: .nan
     skip:
     - ''

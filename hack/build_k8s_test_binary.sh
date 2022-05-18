@@ -2,6 +2,9 @@
 # rm ./e2e.test
 git clone https://github.com/kubernetes/kubernetes.git
 cd kubernetes
+git config --global --add safe.directory /home/kubo/op-readiness/kubernetes
+git checkout 6150737d11fa93a0b9ae4b32546a3ef96ab5dbe1
+
 # make WHAT="test/e2e/e2e.test"
 # mkdir -p ../e2e_test_binary/darwin/
 # cp ./_output/bin/e2e.test ../e2e_test_binary/darwin/e2e.test

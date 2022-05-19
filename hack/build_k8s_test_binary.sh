@@ -17,7 +17,7 @@ if [ $1 == 1 ]; then
     make WHAT="test/e2e/e2e.test"
   popd
 
-  cp ./_output/bin/e2e.test ../e2e.test
+  cp ./kubernetes/_output/bin/e2e.test ../e2e.test
   rm -rf kubernetes
 else
   curl -L "https://dl.k8s.io/$KUBERNETES_VERSION/kubernetes-test-linux-amd64.tar.gz" -o /tmp/test.tar.gz

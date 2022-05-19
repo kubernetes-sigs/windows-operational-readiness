@@ -1,20 +1,25 @@
-# rm -rf kubernetes
-# rm ./e2e.test
-git clone https://github.com/kubernetes/kubernetes.git
-cd kubernetes
-git config --global --add safe.directory /home/kubo/op-readiness/kubernetes
-git checkout 6150737d11fa93a0b9ae4b32546a3ef96ab5dbe1
+#!/usr/bin/env bash
 
-# make WHAT="test/e2e/e2e.test"
-# mkdir -p ../e2e_test_binary/darwin/
-# cp ./_output/bin/e2e.test ../e2e_test_binary/darwin/e2e.test
+KUBERNETES_VERSION="v1.24.0"
+KUBERNETES_HASH=6150737d11fa93a0b9ae4b32546a3ef96ab5dbe1
 
-make WHAT="test/e2e/e2e.test"
-mkdir -p ../e2e_test_binary/linux/
-cp ./_output/bin/e2e.test ../e2e.test
+set -o errexit
+set -o pipefail
 
-# ./build/run.sh make WHAT="test/e2e/e2e.test" KUBE_BUILD_PLATFORMS=linux/amd64
-# mkdir -p ../e2e_test_binary/linux/
-# cp ./_output/dockerized/bin/linux/amd64/e2e.test ../e2e_test_binary/linux/e2e.test
-cd ..
-# rm -rf kubernetes
+if [ $1 == 1 ]; then
+  if [ -d "./kubernetes" ]; then
+    rm -fr "./kubernetes"
+  fi
+  git clone https://github.com/kubernetes/kubernetes.git
+  pushd kubernetes
+    git config --global --add safe.directory /home/kubo/op-readiness/kubernetes
+    git checkout $KUBERNETES_HASH
+    make WHAT="test/e2e/e2e.test"
+  popd
+
+  cp ./_output/bin/e2e.test ../e2e.test
+  rm -rf kubernetes
+else
+  curl -L "https://dl.k8s.io/$KUBERNETES_VERSION/kubernetes-test-linux-amd64.tar.gz" -o /tmp/test.tar.gz
+  tar xvzf /tmp/test.tar.gz --strip-components=3 kubernetes/test/bin/e2e.test
+fi

@@ -3,6 +3,7 @@ package testcases
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os/exec"
 )
 
@@ -17,14 +18,14 @@ type OpTestCase struct {
 }
 
 // RunTest runs the binary set in the test context with the parameters from flags
-func (o *OpTestCase) RunTest(testCtx *TestContext) {
+func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 	args := []string{
 		"--provider", testCtx.Provider,
 		"--kubeconfig", testCtx.KubeConfig,
 		"--node-os-distro", "windows",
 		"--non-blocking-taints", "os",
 	}
-	
+
 	if len(o.Focus) > 0 {
 		focus := o.Focus[0]
 		for k, f := range o.Focus {
@@ -48,14 +49,30 @@ func (o *OpTestCase) RunTest(testCtx *TestContext) {
 	}
 
 	cmd := exec.Command(testCtx.E2EBinary, args...)
-	stderr, _ := cmd.StdoutPipe()
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return err
+	}
 	cmd.Start()
 
-	scanner := bufio.NewScanner(stderr)
+	redirectOutput(stdout)
+	redirectOutput(stderr)
+
+	if err := cmd.Wait(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func redirectOutput(stdout io.ReadCloser) {
+	scanner := bufio.NewScanner(stdout)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		m := scanner.Text()
 		fmt.Println(m)
 	}
-	cmd.Wait()
 }

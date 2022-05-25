@@ -2,14 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/k8sbykeshed/op-readiness/pkg/flags"
 	"github.com/k8sbykeshed/op-readiness/pkg/testcases"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"k8s.io/client-go/tools/clientcmd"
-	"log"
-	"os"
 )
 
 // NewLoggerConfig return the configuration object for the logger
@@ -41,9 +41,11 @@ var (
 
 			opTestConfig, err := testcases.NewOpTestConfig(testFile)
 			if err != nil {
-				log.Fatal(err)
+				zap.L().Error(fmt.Sprintf("Create op-readiness context failed, error is %v", zap.Error(err)))
+				os.Exit(1)
 			}
 			testCtx := testcases.NewTestContext(E2EBinary, kubeconfig, provider, opTestConfig, categories)
+			failedTest := false
 
 			for i, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
@@ -51,7 +53,14 @@ var (
 				}
 
 				zap.L().Info(fmt.Sprintf("Running Operational Readiness Test %v / %v : %v on %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
-				t.RunTest(testCtx)
+				if err = t.RunTest(testCtx); err != nil {
+					zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
+					failedTest = true
+				}
+			}
+
+			if failedTest {
+				os.Exit(1)
 			}
 		},
 	}

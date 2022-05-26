@@ -24,6 +24,7 @@ func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 		"--kubeconfig", testCtx.KubeConfig,
 		"--node-os-distro", "windows",
 		"--non-blocking-taints", "os",
+		"--ginkgo.flakeAttempts", "1",
 	}
 
 	if len(o.Focus) > 0 {

@@ -93,23 +93,30 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: Agnhost, host-process pod
-  # - category: Core.Storage
-  #   description: Ability to mount a hostPath storage volume from a Kubelet into a pod.
-  #   focus:
-  #   - 'HostPathType Directory'
-  #   - 'HostPathType File'
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: Pause
-  # - category: Core.Storage
-  #   description: Ability to mount host volumes
-  #   focus:
-  #   - ''
-  #   linux_image: .nan
-  #   skip:
-  #   - ''
-  #   windows_image: Pause
+  - category: Core.Storage
+    description: Ability to mount a hostPath storage volume from a Kubelet into a pod and read from it.
+    focus:
+    - 'should support r/w'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Storage
+    description: Ability to mount a hostPath storage volume from a Kubelet into a pod and write to it.
+    focus:
+    - 'should support r/w'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
+  - category: Core.Storage
+    description: Ability to mount host volumes. (Secrets/Projected Secrets/ConfigMap/Projected ConfigMap)
+    focus:
+    - 'should be consumable from pods in volume \[NodeConformance\]'
+    linux_image: .nan
+    skip:
+    - ''
+    windows_image: .nan
   # - category: Core.Storage
   #   description: Ability to rotate service accounts for running pods, with the APIServer
   #     access capacity of the pod remaining unchanged over the long term.

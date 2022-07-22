@@ -49,6 +49,7 @@ var (
 
 			for i, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
+					zap.L().Info(fmt.Sprintf("Skipping Operational Readiness Test %v / %v : %v is not in Category %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
 					continue
 				}
 

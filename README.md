@@ -14,34 +14,32 @@ For customization of your specification, see https://github.com/kubernetes/enhan
 
 https://github.com/jayunit100/k8sprototypes/tree/master/windows/op-readiness
 
-## Build and run - development
+## Build the project
 
+#### Build the project with the default Kubernetes version (e.g. v1.24.0)
 ```
-$ make build-test
-
-# run on linux
-$ ./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig>
-
-# run on darwin
-$ ./op-readiness --os=darwin --provider=local --kubeconfig=<path-to-kubeconfig>
+$ make build
+```
+#### Build the project with a specific Kubernetes version
+```
+$ make build KUBERNETES_HASH=<Kubernetes commit sha>
 ```
 
-## Running tests from a category
+## Run the tests
 
 Tests categories can be passed in the flag `--category`, this allows users to pick a category of tests by run.
 To run ALL tests do not pass the flag.
 
 ```
-./op-readiness --category core --category networkpolicy
+./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig> --category=Core.Network --category=networkpolicy
 
-core Ability to access Linux container IPs by service IP (ClusterIP) from Windows containers
+Running Operational Readiness Test 1 / 10 : Ability to access Windows container IP by pod IP on Core.Network
 ...
-core Ability to access Windows container IPs by service IP (ClusterIP) from Linux containers
+Running Operational Readiness Test 2 / 10 : Ability to expose windows pods by creating the service ClusterIP on Core.Network
 ...
-core Ability to access Linux container IPs by NodePort IP from Windows containers
 ```
 
-## Running the Sonobuoy plugin
+#### Run the Sonobuoy plugin
 
 We support an OCI image and a Sonobuoy plugin, so the user don't need to compile the binary locally
 by default the latest version of the E2E binary is builtin the image, if you need to add a custom file
@@ -67,7 +65,7 @@ make sonobuoy-results
 
 The result can be found in the `./sonobuoy-results` folder.
 
-### Settings a particular category
+##### Set a particular category
 
 It's possible to choose one or more categories of tests to run the plugin. In the following
 example both `core` and `activedirectory` tests are being use by the plugin.

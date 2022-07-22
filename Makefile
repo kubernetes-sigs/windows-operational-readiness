@@ -1,7 +1,7 @@
 IMG_REPO ?= <default_value_if_not_set_in_environment>
 IMG_NAME ?= op-readiness
 IMG_TAG ?= dev
-BUILD_SOURCE ?= 0
+KUBERNETES_HASH ?= 0
 
 .PHONY: local-kind-test
 local-kind-test: docker-build
@@ -14,7 +14,7 @@ docker-build:
 
 .PHONY: build
 build: 
-	./hack/build_k8s_test_binary.sh ${BUILD_SOURCE}
+	./hack/build_k8s_test_binary.sh ${KUBERNETES_HASH}
 	go build -o ./op-readiness .
 
 .PHONY: sonobuoy-plugin

@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 
 KUBERNETES_VERSION="v1.24.0"
-KUBERNETES_HASH=6150737d11fa93a0b9ae4b32546a3ef96ab5dbe1
 
 set -o errexit
 set -o pipefail
 
-if [ $1 == 1 ]; then
+if [ $1 != 0 ]; then
   if [ -d "./kubernetes" ]; then
     rm -fr "./kubernetes"
   fi
   git clone https://github.com/kubernetes/kubernetes.git
   pushd kubernetes
     git config --global --add safe.directory /home/kubo/op-readiness/kubernetes
-    git checkout $KUBERNETES_HASH
+    git checkout $1
     make WHAT="test/e2e/e2e.test"
   popd
 

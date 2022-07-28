@@ -1,18 +1,7 @@
-Pardon our dust ! This repo is undergoing rapid iteration right now... if you want to run it, 
-contact `@jayunit100` on upstream k8s.io slack !
+# Windows Operational Readiness
 
-# Operational Readiness Specification for windows
 
-To specify your windows cluster's readiness to run workflows:
-
-- define the example_input.yaml (you can use the example here as a template).
-- run the golang program in this repository.
-
-For customization of your specification, see https://github.com/kubernetes/enhancements/pull/2975. 
-
-## First prototype
-
-https://github.com/jayunit100/k8sprototypes/tree/master/windows/op-readiness
+Define an operational readiness standard for Kubernetes clusters supporting Windows that certifies the readiness of Windows clusters for running production workloads
 
 ## Build the project
 
@@ -26,6 +15,10 @@ $ make build KUBERNETES_HASH=<Kubernetes commit sha>
 ```
 
 ## Run the tests
+
+To specify your windows cluster's readiness to run workflows:
+
+- define the tests.yaml (you can use the "tests.yaml" in the repo as a template).
 
 Tests categories can be passed in the flag `--category`, this allows users to pick a category of tests by run.
 To run ALL tests do not pass the flag.
@@ -84,3 +77,19 @@ spec:
   - --test-file 
   - tests.yaml
 ````
+
+## Community, discussion, contribution, and support
+
+Learn how to engage with the Kubernetes community on the [community page](http://kubernetes.io/community/).
+
+You can reach the maintainers of this project at:
+
+- [Slack channel](https://kubernetes.slack.com/messages/sig-windows) 
+- [Mailing list](https://groups.google.com/g/kubernetes-sig-windows)
+
+### Code of conduct
+
+Participation in the Kubernetes community is governed by the [Kubernetes Code of Conduct](code-of-conduct.md).
+
+[owners]: https://git.k8s.io/community/contributors/guide/owners.md
+[Creative Commons 4.0]: https://git.k8s.io/website/LICENSE

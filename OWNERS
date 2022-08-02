@@ -1,10 +1,10 @@
 # See the OWNERS docs at https://go.k8s.io/owners
 
 approvers:
-  - jayunit100
   - knabben
   - iXinqi
+  - jayunit100
 reviewers:
-  - jayunit100
   - knabben
   - iXinqi
+  - jayunit100

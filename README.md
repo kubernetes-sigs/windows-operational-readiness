@@ -3,6 +3,8 @@
 
 Define an operational readiness standard for Kubernetes clusters supporting Windows that certifies the readiness of Windows clusters for running production workloads
 
+Related KEP: https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/2578-windows-conformance
+
 ## Build the project
 
 #### Build the project with the default Kubernetes version (e.g. v1.24.0)

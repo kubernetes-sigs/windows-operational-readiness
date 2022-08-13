@@ -18,9 +18,10 @@ package testcases
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os/exec"
+
+	"go.uber.org/zap"
 )
 
 type OpTestCase struct {
@@ -33,7 +34,7 @@ type OpTestCase struct {
 	Description        string   `yaml:"description,omitempty"`
 }
 
-// RunTest runs the binary set in the test context with the parameters from flags
+// RunTest runs the binary set in the test context with the parameters from flags.
 func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 	args := []string{
 		"--provider", testCtx.Provider,
@@ -74,7 +75,11 @@ func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 	if err != nil {
 		return err
 	}
-	cmd.Start()
+
+	// Start and run test command with arguments
+	if err := cmd.Start(); err != nil {
+		return err
+	}
 
 	redirectOutput(stdout)
 	redirectOutput(stderr)
@@ -90,6 +95,6 @@ func redirectOutput(stdout io.ReadCloser) {
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		m := scanner.Text()
-		fmt.Println(m)
+		zap.L().Info(m)
 	}
 }

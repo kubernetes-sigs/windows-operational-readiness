@@ -17,8 +17,9 @@ limitations under the License.
 package testcases
 
 import (
-	"github.com/k8sbykeshed/op-readiness/pkg/flags"
 	"testing"
+
+	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
 )
 
 func TestConfigurationValidation(t *testing.T) {
@@ -40,7 +41,7 @@ func TestConfigurationValidation(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		// save global category field
+		// Save the category field globally
 		ctx := TestContext{Categories: tt.categories}
 		answer := ctx.CategoryEnabled(tt.category)
 

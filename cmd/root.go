@@ -20,15 +20,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/k8sbykeshed/op-readiness/pkg/flags"
-	"github.com/k8sbykeshed/op-readiness/pkg/testcases"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
+	"sigs.k8s.io/windows-operational-readiness/pkg/testcases"
 )
 
-// NewLoggerConfig return the configuration object for the logger
+// NewLoggerConfig return the configuration object for the logger.
 func NewLoggerConfig(options ...zap.Option) *zap.Logger {
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
 		MessageKey:  "msg",

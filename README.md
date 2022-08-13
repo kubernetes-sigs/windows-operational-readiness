@@ -1,5 +1,7 @@
-# Windows Operational Readiness
+[![Unit Test](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/unit-tests.yml)
+[![Linter](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/golangci-lint.yml)
 
+# Windows Operational Readiness
 
 Define an operational readiness standard for Kubernetes clusters supporting Windows that certifies the readiness of Windows clusters for running production workloads
 
@@ -8,12 +10,21 @@ Related KEP: https://github.com/kubernetes/enhancements/tree/master/keps/sig-win
 ## Build the project
 
 #### Build the project with the default Kubernetes version (e.g. v1.24.0)
-```
+
+```shell
 $ make build
 ```
 #### Build the project with a specific Kubernetes version
+
+Compiling the e2e binary from source code:
+```shell
+$ KUBERNETES_HASH=<Kubernetes commit sha> make build 
 ```
-$ make build KUBERNETES_HASH=<Kubernetes commit sha>
+
+Or running a pre-compiled released version:
+
+```shell
+$ KUBERNETES_VERSION=v1.24.0 make build 
 ```
 
 ## Run the tests

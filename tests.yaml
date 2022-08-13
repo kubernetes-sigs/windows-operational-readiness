@@ -1,8 +1,10 @@
 kubernetesVersions:
+- 1.25
+- 1.24
 - 1.23
-- 1.22
 
 testCases:
+  # Network category
   - category: Core.Network
     description: Ability to access Windows container IP by pod IP
     focus:
@@ -269,7 +271,7 @@ testCases:
     description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
       are present that block specific pod connectivity.
     focus:
-    - 'sdfadf'
+    - 'test'
     linux_image: .nan
     skip:
     - ''

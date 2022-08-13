@@ -45,7 +45,8 @@ var (
 	E2EBinary  string
 	provider   string
 	testFile   string
-	kubeconfig string
+	kubeConfig string
+	dryRun     bool
 	categories flags.ArrayFlags
 
 	rootCmd = &cobra.Command{
@@ -60,16 +61,16 @@ var (
 				zap.L().Error(fmt.Sprintf("Create op-readiness context failed, error is %v", zap.Error(err)))
 				os.Exit(1)
 			}
-			testCtx := testcases.NewTestContext(E2EBinary, kubeconfig, provider, opTestConfig, categories)
+			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, opTestConfig, dryRun, categories)
 			failedTest := false
 
 			for i, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
-					zap.L().Info(fmt.Sprintf("Skipping Operational Readiness Test %v / %v : %v is not in Category %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
+					zap.L().Warn(fmt.Sprintf("Skipping Operational Readiness Test %v / %v : %v is not in Category %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
 					continue
 				}
 
-				zap.L().Info(fmt.Sprintf("Running Operational Readiness Test %v / %v : %v on %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
+				zap.L().Info(fmt.Sprintf("[%s] %v / %v - Running Operational Readiness Test: %v", t.Category, i+1, len(opTestConfig.OpTestCases), t.Description))
 				if err = t.RunTest(testCtx); err != nil {
 					zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
 					failedTest = true
@@ -91,6 +92,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&testFile, "test-file", "tests.yaml", "Path to YAML file containing the tests.")
 	rootCmd.PersistentFlags().StringVar(&E2EBinary, "e2e-binary", "./e2e.test", "The E2E Ginkgo default binary used to run the tests.")
 	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, local, skeleton (the fallback if not set), etc.)")
-	rootCmd.PersistentFlags().StringVar(&kubeconfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")
+	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")
+	rootCmd.PersistentFlags().BoolVar(&dryRun, "dry-run", false, "Do not run actual tests, used for sanity check.")
 	rootCmd.PersistentFlags().Var(&categories, "category", "Append category of tests you want to run, default empty will run all tests.")
 }

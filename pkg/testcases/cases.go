@@ -20,6 +20,7 @@ import (
 	"bufio"
 	"io"
 	"os/exec"
+	"strings"
 
 	"go.uber.org/zap"
 )
@@ -42,6 +43,13 @@ func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 		"--node-os-distro", "windows",
 		"--non-blocking-taints", "os",
 		"--ginkgo.flakeAttempts", "1",
+	}
+
+	if testCtx.DryRun {
+		zap.L().Info("\t[DryRun] Testing with arguments",
+			zap.String("focus", strings.Join(o.Focus, " ")),
+			zap.String("skip", strings.Join(o.Skip, " ")))
+		return nil
 	}
 
 	if len(o.Focus) > 0 {

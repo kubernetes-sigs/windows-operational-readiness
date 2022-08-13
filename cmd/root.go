@@ -66,7 +66,7 @@ var (
 
 			for i, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
-					zap.L().Warn(fmt.Sprintf("Skipping Operational Readiness Test %v / %v : %v is not in Category %v", i+1, len(opTestConfig.OpTestCases), t.Description, t.Category))
+					zap.L().Warn(fmt.Sprintf("[%s] %v / %v - Skipping Operational Readiness Test: %v", t.Category, i+1, len(opTestConfig.OpTestCases), t.Description))
 					continue
 				}
 

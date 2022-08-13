@@ -4,13 +4,16 @@ sonobuoy-config:
   result-format: raw
 spec:
   command:
-    - /app/op-readiness
+  - /app/op-readiness
   args:
-    - --e2e-binary
-    - /app/e2e.test
-  image: knabben/op-readiness:dev
+  - --e2e-binary
+  - /app/e2e.test
+  - --category
+  - Core.Network
+  - --category
+  - Sub.NetworkPolicy
+  image: winopreadiness/op-readiness:dev
   name: plugin
-  resources: {}
   volumeMounts:
   - mountPath: /tmp/sonobuoy/results
     name: results

@@ -1,0 +1,14 @@
+name: rext
+config:
+  image: "gcr.io/k8s-staging-cluster-api/rext"
+  container_name: "extension"
+  binary_name: "extender"
+  namespace: "default"
+  live_reload_deps: ["main.go", "handlers",]
+  label: RuntimeSDK
+  "kustomize_substitutions": {
+    "SERVICE_NAMESPACE": "default",
+  }
+  additional_resources: {
+    "ExtensionConfig": "extensionconfig.yaml"
+  }

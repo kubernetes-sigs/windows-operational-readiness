@@ -18,10 +18,11 @@ package testcases
 
 import (
 	"fmt"
-	"github.com/go-playground/validator/v10"
+
+	validator "github.com/go-playground/validator/v10"
 )
 
-// validateYAML validate the input YAML and returns the error
+// validateYAML validate the input YAML and returns the error.
 func (o *OpTestConfig) validateYAML() error {
 	validate := validator.New()
 	validate.RegisterStructValidation(OpTestConfigValidation, OpTestConfig{})
@@ -31,7 +32,7 @@ func (o *OpTestConfig) validateYAML() error {
 	return nil
 }
 
-// OpTestConfigValidation set the required fields and is used by the validator function
+// OpTestConfigValidation set the required fields and is used by the validator function.
 func OpTestConfigValidation(sl validator.StructLevel) {
 	opTestConfig := sl.Current().Interface().(OpTestConfig)
 	for _, opTestCase := range opTestConfig.OpTestCases {

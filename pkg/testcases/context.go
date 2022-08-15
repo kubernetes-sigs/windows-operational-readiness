@@ -18,10 +18,11 @@ package testcases
 
 import (
 	"fmt"
-	"github.com/k8sbykeshed/op-readiness/pkg/flags"
+	"os"
+
 	"go.uber.org/zap"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
+	yaml "gopkg.in/yaml.v3"
+	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
 )
 
 type TestContext struct {
@@ -42,11 +43,11 @@ func NewTestContext(e2ebinary, kubeconfig, provider string, testConfig *OpTestCo
 	}
 }
 
-// CategoryEnabled returns a boolean indicating the test category was passed on flags
+// CategoryEnabled returns a boolean indicating the test category was passed on flags.
 func (o *TestContext) CategoryEnabled(category string) bool {
-	// when no categories on flags, set as ALL
+	// When no categories on flags, set as ALL.
 	categories := o.Categories
-	if len(categories) <= 0 {
+	if len(categories) == 0 {
 		return true
 	}
 
@@ -64,16 +65,18 @@ type OpTestConfig struct {
 
 // NewOpTestConfig returns the marshalled test config with the tests on it.
 func NewOpTestConfig(inputYamlFile string) (opTestConfig *OpTestConfig, err error) {
-	inputFile, err := ioutil.ReadFile(inputYamlFile)
+	inputFile, err := os.ReadFile(inputYamlFile)
 	if err != nil {
 		zap.L().Error(fmt.Sprintf("Input testcases file load failed, %v", err))
 		return nil, err
 	}
+
 	if err := yaml.Unmarshal(inputFile, &opTestConfig); err != nil {
 		zap.L().Error(fmt.Sprintf("Input testcases file unmarshal failed, %v", err))
 		return nil, err
 	}
-	// Validate YAML configuration
+
+	// Validate YAML configuration.
 	if err := opTestConfig.validateYAML(); err != nil {
 		return nil, err
 	}

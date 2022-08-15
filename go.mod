@@ -1,6 +1,6 @@
-module github.com/k8sbykeshed/op-readiness
+module sigs.k8s.io/windows-operational-readiness
 
-go 1.17
+go 1.18
 
 require (
 	github.com/go-playground/validator/v10 v10.10.0

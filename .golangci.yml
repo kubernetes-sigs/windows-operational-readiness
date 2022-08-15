@@ -1,0 +1,57 @@
+linters:
+  disable-all: true
+  enable:
+  - asciicheck
+  - bodyclose
+  - deadcode
+  - depguard
+  - dogsled
+  - errcheck
+  - exportloopref
+  - gci
+  - goconst
+  - gocritic
+  - gocyclo
+  - godot
+  - gofmt
+  - goimports
+  - goprintffuncname
+  - gosec
+  - gosimple
+  - govet
+  - ifshort
+  - importas
+  - ineffassign
+  - misspell
+  - nakedret
+  - nilerr
+  - noctx
+  - nolintlint
+  - prealloc
+  - predeclared
+  - revive
+  - rowserrcheck
+  - staticcheck
+  - structcheck
+  - stylecheck
+  - thelper
+  - typecheck
+  - unconvert
+  - unparam
+  - unused
+  - varcheck
+  - whitespace
+
+run:
+  skip-files:
+  - "kubernetes/.*"
+  timeout: 5m
+issue:
+  max-same-issues: 0
+  max-per-linter: 0
+issues:
+  exclude-rules:
+    - path: "pkg/testcases/*"
+      linters:
+        - gosec
+      text: "G204:"

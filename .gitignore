@@ -18,3 +18,9 @@ _artifacts
 main
 
 .idea
+
+# Kubernetes source code folder
+kubernetes/
+
+# Binary result
+op-readiness

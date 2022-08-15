@@ -16,10 +16,13 @@ SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
 
 # Kubernetes build
-IMG_REPO ?= <default_value_if_not_set_in_environment>
+IMG_REPO ?= docker.io/winopreadiness
 IMG_NAME ?= op-readiness
 IMG_TAG ?= dev
+
+# Kubernetes version
 KUBERNETES_HASH ?= 0
+KUBERNETES_VERSION ?= v1.24.0
 
 ## --------------------------------------
 ## Help
@@ -43,15 +46,15 @@ lint-go: ## Lint codebase
 ## --------------------------------------
 ##@ build:
 
-.PHONY: docker-build
-docker-build:  ## Build the Docker image
-	docker build -t ${IMG_REPO}/${IMG_NAME}:${IMG_TAG} .
-	docker push ${IMG_REPO}/${IMG_NAME}:${IMG_TAG}
-
 .PHONY: build
 build:  ## Build the binary using local golang
 	./hack/build_k8s_test_binary.sh ${KUBERNETES_HASH}
 	go build -o ./op-readiness .
+
+.PHONY: build-docker
+build-docker:  ## Build the Docker image and push to the predefined repository
+	docker build --build-arg KUBERNETES_VERSION=${KUBERNETES_VERSION} -t ${IMG_REPO}/${IMG_NAME}:${IMG_TAG} .
+	docker push ${IMG_REPO}/${IMG_NAME}:${IMG_TAG}
 
 ### --------------------------------------
 ### Setup
@@ -70,10 +73,15 @@ local-kind-test: docker-build  ## Run e2e tests with Kind, useful for developmen
 .PHONY: sonobuoy-plugin
 sonobuoy-plugin:  ## Run the Sonobuoy plugin
 	sonobuoy delete
-	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.3 --plugin sonobuoy-plugin.yaml --wait
+	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait
 
+.PHONY: sonobuoy-results
 sonobuoy-results:  ## Read Sonobuoy results
 	rm -rf sonobuoy-results
 	mkdir sonobuoy-results
 	$(eval OUTPUT=$(shell sonobuoy retrieve))
 	tar -xf $(OUTPUT) -C sonobuoy-results
+
+.PHONY: sonobuoy-config-gen
+sonobuoy-config-gen:  ## Run the Sonobuoy plugin
+	cd sonobuoy; ytt -f . > ../sonobuoy-plugin.yaml

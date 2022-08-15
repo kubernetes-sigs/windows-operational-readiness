@@ -29,16 +29,18 @@ type TestContext struct {
 	E2EBinary  string
 	KubeConfig string
 	Provider   string
+	DryRun     bool
 	TestConfig *OpTestConfig
 	Categories flags.ArrayFlags
 }
 
-func NewTestContext(e2ebinary, kubeconfig, provider string, testConfig *OpTestConfig, categories flags.ArrayFlags) *TestContext {
+func NewTestContext(e2ebinary, kubeconfig, provider string, testConfig *OpTestConfig, dryRun bool, categories flags.ArrayFlags) *TestContext {
 	return &TestContext{
 		E2EBinary:  e2ebinary,
 		KubeConfig: kubeconfig,
 		Provider:   provider,
 		TestConfig: testConfig,
+		DryRun:     dryRun,
 		Categories: categories,
 	}
 }

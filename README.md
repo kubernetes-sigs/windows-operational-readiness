@@ -37,7 +37,7 @@ Tests categories can be passed in the flag `--category`, this allows users to pi
 To run ALL tests do not pass the flag.
 
 ```
-./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig> --category=Core.Network --category=networkpolicy
+./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig> --category=Core.Network --category=Sub.NetworkPolicy
 
 Running Operational Readiness Test 1 / 10 : Ability to access Windows container IP by pod IP on Core.Network
 ...
@@ -51,7 +51,7 @@ We support an OCI image and a Sonobuoy plugin, so the user don't need to compile
 by default the latest version of the E2E binary is builtin the image, if you need to add a custom file
 just mount your local version in the plugin at `/app/e2e.test`.
 
-Before running sonobuoy, taint the windows worker node. Sonobuoy pod should be scheduled on the control plane node:
+Before running sonobuoy, taint the Windows worker node. Sonobuoy pod should be scheduled on the control plane node:
 
 ```
 kubectl taint node <windows-worker-node> sonobuoy:NoSchedule
@@ -73,23 +73,8 @@ The result can be found in the `./sonobuoy-results` folder.
 
 ##### Set a particular category
 
-It's possible to choose one or more categories of tests to run the plugin. In the following
-example both `core` and `activedirectory` tests are being use by the plugin.
-
-To allow all tests in the YAML don't use the `--category` flag.
-
-```
-spec:
-  command:
-    - /app/op-readiness
-  args:
-  - --category 
-  - core
-  - --category 
-  - activedirectory
-  - --test-file 
-  - tests.yaml
-````
+The `sonobuoy` folder has a [README](sonobuoy/README.md) detailing how to use the templates
+to render a custom `sonobuoy-plugin.yaml` file.
 
 ## Community, discussion, contribution, and support
 

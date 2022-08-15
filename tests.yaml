@@ -1,8 +1,10 @@
 kubernetesVersions:
+- 1.25
+- 1.24
 - 1.23
-- 1.22
 
 testCases:
+  # Network category
   - category: Core.Network
     description: Ability to access Windows container IP by pod IP
     focus:
@@ -230,7 +232,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  - category: activedirectory
+  - category: Sub.ActiveDirectory
     description: Ability to read and write files as a GMSA User
     focus:
     - 'can read and write file to remote SMB folder'
@@ -238,7 +240,7 @@ testCases:
     skip:
     - ''
     windows_image: .nan
-  - category: activedirectory
+  - category: Sub.ActiveDirectory
     description: Ability to run a pod as a GMSA User and verify if it can connect to the domain successfully
     focus:
     - 'works end to end'
@@ -265,16 +267,16 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  - category: networkpolicy
+  - category: Sub.NetworkPolicy
     description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
       are present that block specific pod connectivity.
     focus:
-    - 'sdfadf'
+    - 'test'
     linux_image: .nan
     skip:
     - ''
     windows_image: .nan
-  - category: networkpolicy
+  - category: Sub.NetworkPolicy
     description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
       are present that block specific namespace connectibity.
     focus:

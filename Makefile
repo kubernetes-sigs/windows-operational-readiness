@@ -15,10 +15,11 @@
 SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
 
-# Kubernetes build
-IMG_REPO ?= docker.io/winopreadiness
-IMG_NAME ?= op-readiness
-IMG_TAG ?= dev
+# Container build
+STAGING_REGISTRY ?= gcr.io/k8s-staging-win-op-rdnss
+IMG_NAME ?= k8s-win-op-rdnss
+TAG ?=  $(shell git describe --tags --always `git rev-parse HEAD`)
+IMG_PATH ?= $(STAGING_REGISTRY)/$(IMG_NAME)
 
 # Kubernetes version
 KUBERNETES_HASH ?= 0
@@ -51,10 +52,23 @@ build:  ## Build the binary using local golang
 	./hack/build_k8s_test_binary.sh ${KUBERNETES_HASH}
 	go build -o ./op-readiness .
 
-.PHONY: build-docker
-build-docker:  ## Build the Docker image and push to the predefined repository
-	docker build --build-arg KUBERNETES_VERSION=${KUBERNETES_VERSION} -t ${IMG_REPO}/${IMG_NAME}:${IMG_TAG} .
-	docker push ${IMG_REPO}/${IMG_NAME}:${IMG_TAG}
+## --------------------------------------
+## Container
+## --------------------------------------
+##@ container:
+.PHONY: image_build
+image_build: ## Build the container image
+	docker build --build-arg KUBERNETES_VERSION=$(KUBERNETES_VERSION) -t $(IMG_PATH):$(TAG) .
+	docker tag $(IMG_PATH):$(TAG) $(IMG_PATH):latest
+
+.PHONY: image_push
+image_push: ## Push the container image to k8s-staging bucket
+	docker push $(IMG_PATH):$(TAG)
+	docker push $(IMG_PATH):latest
+
+.PHONY: release-staging
+release-staging: ## Builds and push container image to k8s-staging bucket
+	$(MAKE) image_build image_push
 
 ### --------------------------------------
 ### Setup
@@ -63,7 +77,7 @@ build-docker:  ## Build the Docker image and push to the predefined repository
 
 .PHONY: local-kind-test
 local-kind-test: docker-build  ## Run e2e tests with Kind, useful for development mode
-	./hack/kind_run.sh ${IMG_REPO} ${IMG_NAME} ${IMG_TAG}
+	./hack/kind_run.sh ${IMG_REPO} ${IMG_NAME} ${TAG}
 
 ### --------------------------------------
 ### Testing
@@ -73,14 +87,13 @@ local-kind-test: docker-build  ## Run e2e tests with Kind, useful for developmen
 .PHONY: sonobuoy-plugin
 sonobuoy-plugin:  ## Run the Sonobuoy plugin
 	sonobuoy delete
-	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait
+	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait=0
 
 .PHONY: sonobuoy-results
 sonobuoy-results:  ## Read Sonobuoy results
-	rm -rf sonobuoy-results
-	mkdir sonobuoy-results
+	rm -rf sonobuoy-results && mkdir sonobuoy-results
 	$(eval OUTPUT=$(shell sonobuoy retrieve))
-	tar -xf $(OUTPUT) -C sonobuoy-results
+	tar -xf $(OUTPUT) -C sonobuoy-results && rm -f $(OUTPUT) && cat sonobuoy-results/plugins/op-readiness/results/global/out.json
 
 .PHONY: sonobuoy-config-gen
 sonobuoy-config-gen:  ## Run the Sonobuoy plugin

@@ -73,14 +73,13 @@ local-kind-test: docker-build  ## Run e2e tests with Kind, useful for developmen
 .PHONY: sonobuoy-plugin
 sonobuoy-plugin:  ## Run the Sonobuoy plugin
 	sonobuoy delete
-	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait
+	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait=0
 
 .PHONY: sonobuoy-results
 sonobuoy-results:  ## Read Sonobuoy results
-	rm -rf sonobuoy-results
-	mkdir sonobuoy-results
+	rm -rf sonobuoy-results && mkdir sonobuoy-results
 	$(eval OUTPUT=$(shell sonobuoy retrieve))
-	tar -xf $(OUTPUT) -C sonobuoy-results
+	tar -xf $(OUTPUT) -C sonobuoy-results && rm -f $(OUTPUT) && cat sonobuoy-results/plugins/op-readiness/results/global/out.json
 
 .PHONY: sonobuoy-config-gen
 sonobuoy-config-gen:  ## Run the Sonobuoy plugin

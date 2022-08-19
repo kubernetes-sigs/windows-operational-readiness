@@ -8,6 +8,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o op-readiness .
 
 FROM debian:bookworm-slim
 WORKDIR /app
+COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/run.sh /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/e2e.test /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/op-readiness /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/tests.yaml /app/

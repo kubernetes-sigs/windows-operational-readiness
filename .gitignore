@@ -24,3 +24,4 @@ kubernetes/
 
 # Binary result
 op-readiness
+e2e.test

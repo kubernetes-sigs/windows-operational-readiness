@@ -1,17 +1,17 @@
 sonobuoy-config:
   driver: Job
   plugin-name: op-readiness
-  result-format: raw
+  result-format: manual
 spec:
   command:
-  - /app/op-readiness
+  - /app/run.sh
   args:
   - --e2e-binary
   - /app/e2e.test
   - --category
   - Core.Network
   - --category
-  - Sub.NetworkPolicy
+  - Extend.NetworkPolicy
   image: winopreadiness/op-readiness:dev
   name: plugin
   volumeMounts:

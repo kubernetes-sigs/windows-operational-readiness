@@ -128,6 +128,7 @@ testCases:
     skip:
     - ''
     windows_image: .nan
+  # Core Scheduling
   # - category: Core.Scheduling
   #   description: Ability to schedule pods with CPU and Memory limits demonstrably honored
   #     over time.
@@ -146,6 +147,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
+  # Core Concurrent
   # - category: Core.Concurrent
   #   description: Ability to reschedule a deployment Pod, 50 times in a row, with continuous
   #     deletions in the background.
@@ -173,6 +175,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
+  # Extend HostProcess
   # - category: Extend.HostProcess
   #   description: Ability to access the APIServer using pod mounted service accounts
   #     from a hostProcess pod.
@@ -223,7 +226,8 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: activedirectory
+  # Extend ActiveDirectory
+  # - category: Extend.ActiveDirectory
   #   description: Ability to utilize NT Authority/Network Service should be able to interact
   #     with host network objects
   #   focus:
@@ -232,7 +236,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  - category: Sub.ActiveDirectory
+  - category: Extend.ActiveDirectory
     description: Ability to read and write files as a GMSA User
     focus:
     - 'can read and write file to remote SMB folder'
@@ -240,7 +244,7 @@ testCases:
     skip:
     - ''
     windows_image: .nan
-  - category: Sub.ActiveDirectory
+  - category: Extend.ActiveDirectory
     description: Ability to run a pod as a GMSA User and verify if it can connect to the domain successfully
     focus:
     - 'works end to end'
@@ -248,7 +252,7 @@ testCases:
     skip:
     - ''
     windows_image: .nan
-  # - category: activedirectory
+  #- category: Extend.ActiveDirectory
   #   description: The behavior of the `RunAsUserName` field for Windows pods should be
   #     that it is supported (i.e. pods can use this), but that there are no guarantees
   #     around volume permissions and access when using this field.
@@ -258,7 +262,7 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  # - category: activedirectory
+  #- category: Extend.ActiveDirectory
   #   description: Observed lack of Ability to read and write from local storage when
   #     ActiveDirectory protected resources credentials are not present
   #   focus:
@@ -267,16 +271,16 @@ testCases:
   #   skip:
   #   - ''
   #   windows_image: .nan
-  - category: Sub.NetworkPolicy
-    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
-      are present that block specific pod connectivity.
-    focus:
-    - 'test'
-    linux_image: .nan
-    skip:
-    - ''
-    windows_image: .nan
-  - category: Sub.NetworkPolicy
+  # - category: Extend.NetworkPolicy
+  #   description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+  #     are present that block specific pod connectivity.
+  #   focus:
+  #   - ''
+  #   linux_image: .nan
+  #   skip:
+  #   - ''
+  #   windows_image: .nan
+  - category: Extend.NetworkPolicy
     description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
       are present that block specific namespace connectibity.
     focus:

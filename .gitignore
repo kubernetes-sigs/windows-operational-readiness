@@ -25,3 +25,6 @@ kubernetes/
 # Binary result
 op-readiness
 e2e.test
+
+# Sonobuoy data
+sonobuoy-results/

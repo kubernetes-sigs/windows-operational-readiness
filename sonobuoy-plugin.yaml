@@ -12,7 +12,7 @@ spec:
   - Core.Network
   - --category
   - Extend.NetworkPolicy
-  image: winopreadiness/op-readiness:dev
+  image: gcr.io/k8s-staging-win-op-rdnss/k8s-win-op-rdnss:latest
   name: plugin
   volumeMounts:
   - mountPath: /tmp/sonobuoy/results

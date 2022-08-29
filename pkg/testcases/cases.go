@@ -41,7 +41,7 @@ func (o *OpTestCase) RunTest(testCtx *TestContext) error {
 		"--provider", testCtx.Provider,
 		"--kubeconfig", testCtx.KubeConfig,
 		"--node-os-distro", "windows",
-		"--non-blocking-taints", "os",
+		"--non-blocking-taints", "os,node-role.kubernetes.io/master,node-role.kubernetes.io/control-plane",
 		"--ginkgo.flakeAttempts", "1",
 	}
 

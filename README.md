@@ -53,19 +53,19 @@ just mount your local version in the plugin at `/app/e2e.test`.
 
 Before running sonobuoy, taint the Windows worker node. Sonobuoy pod should be scheduled on the control plane node:
 
-```
+```shell
 kubectl taint node <windows-worker-node> sonobuoy:NoSchedule
 ```
 
 To run the plugin with the default image:
 
-```
+```shell
 make sonobuoy-plugin
 ```
 
 To retrieve the sonobuoy result:
 
-```
+```shell
 make sonobuoy-results
 ```
 
@@ -75,6 +75,14 @@ The result can be found in the `./sonobuoy-results` folder.
 
 The `sonobuoy` folder has a [README](sonobuoy/README.md) detailing how to use the templates
 to render a custom `sonobuoy-plugin.yaml` file.
+
+#### Running on CAPZ upstream
+
+If you want to test your changes on upstream, use the following bot commmand:
+
+```shell
+/test operational-tests-capz-windows-2019
+```
 
 ## Community, discussion, contribution, and support
 

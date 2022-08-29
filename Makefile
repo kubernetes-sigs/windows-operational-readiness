@@ -76,7 +76,7 @@ release-staging: ## Builds and push container image to k8s-staging bucket
 ##@ setup:
 
 .PHONY: local-kind-test
-local-kind-test: docker-build  ## Run e2e tests with Kind, useful for development mode
+local-kind-test: image_build ## Run e2e tests with Kind, useful for development mode
 	./hack/kind_run.sh ${IMG_REPO} ${IMG_NAME} ${TAG}
 
 ### --------------------------------------

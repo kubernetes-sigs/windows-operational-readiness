@@ -40,7 +40,7 @@ help: ## Display this help
 
 .PHONY: lint-go
 lint-go: ## Lint codebase
-	docker run --rm -v $(PWD):/app -w /app -it golangci/golangci-lint golangci-lint run -v
+	docker run --rm -v $(PWD):/app -w /app -it golangci/golangci-lint golangci-lint run -v --fix
 
 ## --------------------------------------
 ## Build

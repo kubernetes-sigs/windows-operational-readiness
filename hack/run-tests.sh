@@ -25,4 +25,4 @@ export KUBERNETES_VERSION="v1.25.0"
 make build
 
 # run existent test outside the cluster
-./op-readiness --category Core.Network --category Core.Storage --provider=local
+./op-readiness --category Core.Network --provider=local

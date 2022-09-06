@@ -19,7 +19,7 @@ set -o nounset
 set -o pipefail
 set -o xtrace
 
-export KUBERNETES_VERSION="v1.25.0"
+KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.25.0"}
 
 # build the binary and download tests
 make build

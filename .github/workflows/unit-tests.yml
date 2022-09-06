@@ -23,6 +23,5 @@ jobs:
           go test -v ./...
       - name: Build the binary
         run: |
-          touch e2e.test 
           make build
           ./op-readiness --dry-run

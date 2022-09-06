@@ -16,6 +16,7 @@
 
 set -o errexit
 set -o pipefail
+set -x
 
 # todo(knabben) - fetch latest or pass as argument
 KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.24.0"}
@@ -40,6 +41,6 @@ if [ $1 != 0 ]; then
   rm -rf kubernetes
 elif [ ! -f "e2e.test" ]; then
   # Download the binary directly from Kubernetes release, skip if already exists
-  curl -L "https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-test-linux-amd64.tar.gz" -o /tmp/test.tar.gz
-  tar xvzf /tmp/test.tar.gz --strip-components=3 kubernetes/test/bin/e2e.test
+  curl -L "https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-test-linux-amd64.tar.gz" -o test.tar.gz
+  tar xvzf test.tar.gz --strip-components=3 kubernetes/test/bin/e2e.test
 fi

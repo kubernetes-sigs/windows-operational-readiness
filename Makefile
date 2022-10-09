@@ -18,7 +18,7 @@ SHELL := /usr/bin/env bash
 # Container build
 STAGING_REGISTRY ?= gcr.io/k8s-staging-win-op-rdnss
 IMG_NAME ?= k8s-win-op-rdnss
-TAG ?=  $(shell git describe --tags --always `git rev-parse HEAD`)
+TAG ?= $(shell git describe --tags --always `git rev-parse HEAD`)
 IMG_PATH ?= $(STAGING_REGISTRY)/$(IMG_NAME)
 
 # Kubernetes version
@@ -86,14 +86,13 @@ local-kind-test: image_build ## Run e2e tests with Kind, useful for development 
 
 .PHONY: sonobuoy-plugin
 sonobuoy-plugin:  ## Run the Sonobuoy plugin
-	sonobuoy delete
-	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait=0
+	sonobuoy delete --all
+	sonobuoy run --sonobuoy-image projects.registry.vmware.com/sonobuoy/sonobuoy:v0.56.9 --plugin sonobuoy-plugin.yaml --wait
 
 .PHONY: sonobuoy-results
 sonobuoy-results:  ## Read Sonobuoy results
-	rm -rf sonobuoy-results && mkdir sonobuoy-results
 	$(eval OUTPUT=$(shell sonobuoy retrieve))
-	tar -xf $(OUTPUT) -C sonobuoy-results && rm -f $(OUTPUT) && cat sonobuoy-results/plugins/op-readiness/results/global/out.json
+	sonobuoy results --mode=report $(OUTPUT)
 
 .PHONY: sonobuoy-config-gen
 sonobuoy-config-gen:  ## Run the Sonobuoy plugin

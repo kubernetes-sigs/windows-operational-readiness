@@ -272,7 +272,7 @@ testCases:
   #   - ''
   #   windows_image: .nan
   # - category: Extend.NetworkPolicy
-  #   description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
+  #   description: Ability to protect IPv4 pods from accessing other pods when TCP NetworkPolicys
   #     are present that block specific pod connectivity.
   #   focus:
   #   - ''
@@ -281,8 +281,8 @@ testCases:
   #   - ''
   #   windows_image: .nan
   - category: Extend.NetworkPolicy
-    description: Ability to protect IPv4 pods from acceessing other pods when TCP NetworkPolicys
-      are present that block specific namespace connectibity.
+    description: Ability to protect IPv4 pods from accessing other pods when TCP NetworkPolicys
+      are present that block specific namespace connectability.
     focus:
     - 'should deny ingress from pods on other namespaces'
     linux_image: .nan

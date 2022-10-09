@@ -69,7 +69,48 @@ To retrieve the sonobuoy result:
 make sonobuoy-results
 ```
 
-The result can be found in the `./sonobuoy-results` folder.
+The failed results are going to be formatted as follow by default:
+
+````
+Plugin: op-readiness
+Status: failed
+Total: 6965
+Passed: 0
+Failed: 1
+Skipped: 6964
+
+Failed tests:
+[sig-network] Netpol NetworkPolicy between server and client should deny ingress from pods on other nam
+espaces [Feature:NetworkPolicy]
+
+Run Details:
+API Server version: v1.24.0
+Node health: 1/1 (100%)
+Pods health: 12/20 (60%)
+Details for failed pods:
+netpol-2630-x/a Ready:: :
+netpol-2630-x/c Ready:: :
+netpol-2630-y/a Ready:: :
+netpol-2630-y/b Ready:: :
+netpol-2630-y/c Ready:: :
+netpol-2630-z/a Ready:: :
+netpol-2630-z/b Ready:: :
+netpol-2630-z/c Ready:: :
+Errors detected in files:
+Errors:
+84 podlogs/kube-system/kube-controller-manager-kind-control-plane/logs/kube-controller-manager.txt
+51 podlogs/kube-system/kube-scheduler-kind-control-plane/logs/kube-scheduler.txt
+47 podlogs/kube-system/kube-apiserver-kind-control-plane/logs/kube-apiserver.txt
+10 podlogs/sonobuoy/sonobuoy-op-readiness-job-45e7d10ce5584b90/logs/plugin.txt
+ 6 podlogs/kube-system/kube-proxy-jdx82/logs/kube-proxy.txt
+Warnings:
+30 podlogs/kube-system/kube-scheduler-kind-control-plane/logs/kube-scheduler.txt
+22 podlogs/kube-system/kube-apiserver-kind-control-plane/logs/kube-apiserver.txt
+ 7 podlogs/kube-system/kube-controller-manager-kind-control-plane/logs/kube-controller-manager.txt
+ 2 podlogs/sonobuoy/sonobuoy/logs/kube-sonobuoy.txt
+ 1 podlogs/kube-system/etcd-kind-control-plane/logs/etcd.txt
+ 1 podlogs/sonobuoy/sonobuoy-op-readiness-job-45e7d10ce5584b90/logs/plugin.txt
+```
 
 ##### Set a particular category
 

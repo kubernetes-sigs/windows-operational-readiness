@@ -63,7 +63,6 @@ var (
 				os.Exit(1)
 			}
 			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, opTestConfig, dryRun, reportDir, categories)
-			failedTest := false
 
 			for idx, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
@@ -74,12 +73,7 @@ var (
 				zap.L().Info(fmt.Sprintf("[%s] %v / %v - Running Operational Readiness Test: %v", t.Category, idx+1, len(opTestConfig.OpTestCases), t.Description))
 				if err = t.RunTest(testCtx, idx+1); err != nil {
 					zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
-					failedTest = true
 				}
-			}
-
-			if failedTest {
-				os.Exit(1)
 			}
 		},
 	}

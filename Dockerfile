@@ -1,4 +1,4 @@
-FROM golang:1.18 as build
+FROM golang:1.19 as build
 WORKDIR /go/src/sigs.k8s.io/windows-operational-readiness
 COPY . .
 ARG KUBERNETES_VERSION
@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o op-readiness .
 
 FROM debian:bookworm-slim
 WORKDIR /app
-COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/run.sh /app/
+ENV ARTIFACTS /tmp/sonobuoy/results
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/e2e.test /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/op-readiness /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/tests.yaml /app/

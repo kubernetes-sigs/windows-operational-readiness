@@ -71,7 +71,7 @@ make sonobuoy-results
 
 The failed results are going to be formatted as follow by default:
 
-````
+```
 Plugin: op-readiness
 Status: failed
 Total: 6965

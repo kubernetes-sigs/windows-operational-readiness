@@ -31,7 +31,7 @@ $ KUBERNETES_VERSION=v1.24.0 make build
 
 To specify your windows cluster's readiness to run workflows:
 
-- define the tests.yaml (you can use the "tests.yaml" in the repo as a template).
+- define the testcases.yaml (you can use the "testcases.yaml" in the repo as a template).
 
 Tests categories can be passed in the flag `--category`, this allows users to pick a category of tests by run.
 To run ALL tests do not pass the flag.

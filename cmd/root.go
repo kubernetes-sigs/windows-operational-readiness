@@ -91,7 +91,7 @@ func getEnvOrDefault(key, defaultString string) string {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&testFile, "test-file", "tests.yaml", "Path to YAML file containing the tests.")
+	rootCmd.PersistentFlags().StringVar(&testFile, "test-file", "testcases.yaml", "Path to YAML file containing the tests.")
 	rootCmd.PersistentFlags().StringVar(&E2EBinary, "e2e-binary", "./e2e.test", "The E2E Ginkgo default binary used to run the tests.")
 	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, local, skeleton (the fallback if not set), etc.)")
 	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")

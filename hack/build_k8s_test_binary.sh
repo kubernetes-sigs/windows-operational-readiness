@@ -41,6 +41,7 @@ if [ $1 != 0 ]; then
   rm -rf kubernetes
 elif [ ! -f "e2e.test" ]; then
   # Download the binary directly from Kubernetes release, skip if already exists
-  curl -L "https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-test-linux-amd64.tar.gz" -o test.tar.gz
+  E2E_BINARY_VERSION=$(echo $KUBERNETES_VERSION | cut -d. -f 1-4)
+  curl -L "https://dl.k8s.io/${E2E_BINARY_VERSION}/kubernetes-test-linux-amd64.tar.gz" -o test.tar.gz
   tar xvzf test.tar.gz --strip-components=3 kubernetes/test/bin/e2e.test
 fi

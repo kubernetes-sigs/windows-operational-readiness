@@ -11,5 +11,5 @@ WORKDIR /app
 ENV ARTIFACTS /tmp/sonobuoy/results
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/e2e.test /app/
 COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/op-readiness /app/
-COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/tests.yaml /app/
+COPY --from=0 /go/src/sigs.k8s.io/windows-operational-readiness/testcases.yaml /app/
 CMD ["./op-readiness"]

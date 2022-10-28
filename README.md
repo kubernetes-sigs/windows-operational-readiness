@@ -8,7 +8,7 @@ Define an operational readiness standard for Kubernetes clusters supporting Wind
 Related KEP: https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/2578-windows-conformance
 
 ## Build the project
-5
+
 #### Build the project with the default Kubernetes version (e.g. v1.25.0)
 
 ```shell

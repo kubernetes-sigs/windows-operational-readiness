@@ -8,8 +8,8 @@ Define an operational readiness standard for Kubernetes clusters supporting Wind
 Related KEP: https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/2578-windows-conformance
 
 ## Build the project
-
-#### Build the project with the default Kubernetes version (e.g. v1.24.0)
+5
+#### Build the project with the default Kubernetes version (e.g. v1.25.0)
 
 ```shell
 $ make build
@@ -24,7 +24,7 @@ $ KUBERNETES_HASH=<Kubernetes commit sha> make build
 Or running a pre-compiled released version:
 
 ```shell
-$ KUBERNETES_VERSION=v1.24.0 make build 
+$ KUBERNETES_VERSION=v1.25.0 make build 
 ```
 
 ## Run the tests

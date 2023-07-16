@@ -43,6 +43,15 @@ lint-go: ## Lint codebase
 	docker run --rm -v $(PWD):/app -w /app -it golangci/golangci-lint golangci-lint run -v --fix
 
 ## --------------------------------------
+## Clean
+## --------------------------------------
+##@ clean:
+
+.PHONY: clean
+clean :
+	rm -rf op-readiness test.tar.gz e2e.test --report-prefix/
+
+## --------------------------------------
 ## Build
 ## --------------------------------------
 ##@ build:

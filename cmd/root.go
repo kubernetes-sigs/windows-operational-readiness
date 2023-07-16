@@ -24,6 +24,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"k8s.io/client-go/tools/clientcmd"
+
 	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
 	"sigs.k8s.io/windows-operational-readiness/pkg/testcases"
 )
@@ -93,7 +94,7 @@ func getEnvOrDefault(key, defaultString string) string {
 func init() {
 	rootCmd.PersistentFlags().StringVar(&testFile, "test-file", "testcases.yaml", "Path to YAML file containing the tests.")
 	rootCmd.PersistentFlags().StringVar(&E2EBinary, "e2e-binary", "./e2e.test", "The E2E Ginkgo default binary used to run the tests.")
-	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, local, skeleton (the fallback if not set), etc.)")
+	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, aws, local, skeleton, etc.)")
 	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")
 	rootCmd.PersistentFlags().StringVar(&reportDir, "report-dir", getEnvOrDefault("ARTIFACTS", ""), "Report dump directory, uses artifact for CI integration when set.")
 	rootCmd.PersistentFlags().BoolVar(&dryRun, "dry-run", false, "Do not run actual tests, used for sanity check.")

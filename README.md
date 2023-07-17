@@ -3,52 +3,106 @@
 
 # Windows Operational Readiness
 
-Define an operational readiness standard for Kubernetes clusters supporting Windows that certifies the readiness of Windows clusters for running production workloads
+* [Windows Operational Readiness](#windows-operational-readiness)
+    * [Build the project](#build-the-project)
+    * [Run the tests](#run-the-tests)
+        * [Run the tests using the ops-readiness binary](#run-the-tests-using-the-ops-readiness-binary)
+        * [Run the tests as a Sonobuoy plugin](#run-the-tests-as-a-sonobuoy-plugin)
+        * [Running on CAPZ upstream](#running-on-capz-upstream)
+        * [Customizing the test suite](#customizing-the-test-suite)
+    * [Community, discussion, contribution, and support](#community-discussion-contribution-and-support)
+        * [Code of conduct](#code-of-conduct)
 
-Related KEP: https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/2578-windows-conformance
+Define an operational readiness standard for Kubernetes clusters supporting Windows that certifies the readiness of
+Windows clusters for running production workloads.
+
+Related
+KEP: [KEP-2578: Windows Operational Readiness Specification](https://github.com/kubernetes/enhancements/tree/master/keps/sig-windows/2578-windows-conformance)
 
 ## Build the project
 
-#### Build the project with the default Kubernetes version (e.g. v1.25.0)
+Building the project will compile the kubernetes e2e binary from source code and also compile
+the `windows-operational-readiness` project.
+
+Before building, optionally run clean to ensure the previous build artefacts are cleaned up
 
 ```shell
-$ make build
+$ make clean
 ```
-#### Build the project with a specific Kubernetes version
 
-Compiling the e2e binary from source code:
+Build the project with a specific Kubernetes hash
+
 ```shell
 $ KUBERNETES_HASH=<Kubernetes commit sha> make build 
 ```
 
-Or running a pre-compiled released version:
+Build the project with a specific Kubernetes version e.g.
 
 ```shell
-$ KUBERNETES_VERSION=v1.25.0 make build 
+$ KUBERNETES_VERSION=v1.27.1 make build 
+```
+
+Build the project with default Kubernetes version
+
+```shell
+$ make build
 ```
 
 ## Run the tests
 
-To specify your windows cluster's readiness to run workflows:
+You can run the tests against the entire test suite, or by specifying a list of categories.
+Each test category has test cases that verify the related functionality required for an operational Windows cluster.
 
-- define the testcases.yaml (you can use the "testcases.yaml" in the repo as a template).
+The following categories exist.
 
-Tests categories can be passed in the flag `--category`, this allows users to pick a category of tests by run.
-To run ALL tests do not pass the flag.
+| Category Name            | Category Description                                                                                                                  |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| `Core.Network`           | Tests minimal networking functionality e.g. ability to access pod by pod IP                                                           |
+| `Core.Storage`           | Tests minimal storage functionality e.g. ability to mount a hostPath storage volume                                                   |
+| `Core.Scheduling`        | Tests minimal scheduling functionality e.g. ability to schedule a pod with CPU limits                                                 |
+| `Core.Concurrent`        | Tests minimal concurrent functionality e.g. ability to of node to handle traffic to multiple pods concurrently                        |
+| `Extend.HostProcess`     | Tests features related to Windows HostProcess pod functionality.                                                                      |
+| `Extend.ActiveDirectory` | Tests features related to Active Directory functionality.                                                                             |
+| `Extend.NetworkPolicy`   | Tests features related to Network Policy functionality.                                                                               |
+| `Extend.Network`         | Tests advanced networking functionality e.g. ability to support IPv6                                                                  |
+| `Extend.Worker`          | Tests features related to windows worker node functionality e.e. ability for nodes to access TCP and UDP services in the same cluster |
+
+You can run the tests in the following ways.
+
+### Run the tests using the ops-readiness binary
+
+Before running the tests, ensure you have built the project using hte previously specified instrunctions.
+
+You can run the tests using the following command. This example command will run all the tests in the op-readiness test
+suite.
+
+```shell
+./op-readiness --provider=<provider> --kubeconfig=<path-to-kubeconfig>
+```
+
+If you run the program correctly, you should see output such as the following.
 
 ```
-./op-readiness --provider=local --kubeconfig=<path-to-kubeconfig> --category=Core.Network --category=Sub.NetworkPolicy
-
 Running Operational Readiness Test 1 / 10 : Ability to access Windows container IP by pod IP on Core.Network
 ...
 Running Operational Readiness Test 2 / 10 : Ability to expose windows pods by creating the service ClusterIP on Core.Network
 ...
 ```
 
-#### Run the Sonobuoy plugin
+You can specify the following arguments as part of the command to run the tests.
 
-We support an OCI image and a Sonobuoy plugin, so the user don't need to compile the binary locally
-by default the latest version of the E2E binary is builtin the image, if you need to add a custom file
+| Arg            | Description                                                                                                                                       | Default value                                  |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `--kubeconfig` | Path to kubeconfig. Prefer to specify an absolute file path.                                                                                      | Uses location set to `KUBECONFIG` env variable |
+| `--provider`   | The name of the Kubernetes provider (e.g. aks, gke, aws, local, skeleton)                                                                         | `local`                                        |
+| `--report-dir` | Path to where to dump the JUnit test report.                                                                                                      | Uses location set to `ARTIFACTS` env variable  |  
+| `--dry-run`    | Do not run actual tests, used for sanity check.                                                                                                   | `false`                                        |
+| `--category`   | Specify a category with tests you want to run. You can specify multiple categories e.g. `--category=Core.Network --category=Extend.NetworkPolicy` | Empty, will run all tests.                     |
+
+### Run the tests as a Sonobuoy plugin
+
+We support an OCI image and a Sonobuoy plugin, so you do not need to compile the binary locally.
+By default, the latest version of the E2E binary is builtin the image, and if you need to add a custom file
 just mount your local version in the plugin at `/app/e2e.test`.
 
 Before running sonobuoy, taint the Windows worker node. Sonobuoy pod should be scheduled on the control plane node:
@@ -112,9 +166,8 @@ Warnings:
  1 podlogs/sonobuoy/sonobuoy-op-readiness-job-45e7d10ce5584b90/logs/plugin.txt
 ```
 
-##### Set a particular category
-
-The `sonobuoy` folder has a [README](sonobuoy/README.md) detailing how to use the templates
+To set a particular category, see the `sonobuoy` folder which has a [README](sonobuoy/README.md) detailing how to use
+the templates
 to render a custom `sonobuoy-plugin.yaml` file.
 
 #### Running on CAPZ upstream
@@ -125,13 +178,18 @@ If you want to test your changes on upstream, use the following bot commmand:
 /test operational-tests-capz-windows-2019
 ```
 
+#### Customizing the test suite
+
+You can customize the test suite to specify your own windows cluster's readiness workflows.
+You can do this by updating the testcases.yaml file.
+
 ## Community, discussion, contribution, and support
 
 Learn how to engage with the Kubernetes community on the [community page](http://kubernetes.io/community/).
 
 You can reach the maintainers of this project at:
 
-- [Slack channel](https://kubernetes.slack.com/messages/sig-windows) 
+- [Slack channel](https://kubernetes.slack.com/messages/sig-windows)
 - [Mailing list](https://groups.google.com/g/kubernetes-sig-windows)
 
 ### Code of conduct
@@ -139,4 +197,5 @@ You can reach the maintainers of this project at:
 Participation in the Kubernetes community is governed by the [Kubernetes Code of Conduct](code-of-conduct.md).
 
 [owners]: https://git.k8s.io/community/contributors/guide/owners.md
+
 [Creative Commons 4.0]: https://git.k8s.io/website/LICENSE

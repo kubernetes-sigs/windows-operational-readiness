@@ -1,0 +1,17 @@
+name: Bug Report
+description: Report a bug encountered
+labels: kind/bug
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Describe the bug. What is the current and expected behaviour?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce it (as minimally and precisely as possible)?
+    validations:
+      required: true

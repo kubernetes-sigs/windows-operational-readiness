@@ -48,6 +48,7 @@ var (
 	testFile   string
 	kubeConfig string
 	dryRun     bool
+	verbose    bool
 	reportDir  string
 	categories flags.ArrayFlags
 
@@ -63,7 +64,7 @@ var (
 				zap.L().Error(fmt.Sprintf("Create op-readiness context failed, error is %v", zap.Error(err)))
 				os.Exit(1)
 			}
-			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, opTestConfig, dryRun, reportDir, categories)
+			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, opTestConfig, dryRun, verbose, reportDir, categories)
 
 			for idx, t := range opTestConfig.OpTestCases {
 				if !testCtx.CategoryEnabled(t.Category) {
@@ -98,5 +99,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")
 	rootCmd.PersistentFlags().StringVar(&reportDir, "report-dir", getEnvOrDefault("ARTIFACTS", ""), "Report dump directory, uses artifact for CI integration when set.")
 	rootCmd.PersistentFlags().BoolVar(&dryRun, "dry-run", false, "Do not run actual tests, used for sanity check.")
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Enable Ginkgo verbosity.")
 	rootCmd.PersistentFlags().Var(&categories, "category", "Append category of tests you want to run, default empty will run all tests.")
 }

@@ -49,7 +49,7 @@ lint-go: ## Lint codebase
 
 .PHONY: clean
 clean :
-	rm -rf op-readiness test.tar.gz e2e.test --report-prefix/
+	rm -rf op-readiness test.tar.gz e2e.test ./--report-prefix/
 
 ## --------------------------------------
 ## Build

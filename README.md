@@ -97,6 +97,7 @@ You can specify the following arguments as part of the command to run the tests.
 | `--provider`   | The name of the Kubernetes provider (e.g. aks, gke, aws, local, skeleton)                                                                         | `local`                                        |
 | `--report-dir` | Path to where to dump the JUnit test report.                                                                                                      | Uses location set to `ARTIFACTS` env variable  |  
 | `--dry-run`    | Do not run actual tests, used for sanity check.                                                                                                   | `false`                                        |
+| `--verbose`    | Enable Ginkgo verbosity.                                                                                                                          | `false`                                        |
 | `--category`   | Specify a category with tests you want to run. You can specify multiple categories e.g. `--category=Core.Network --category=Extend.NetworkPolicy` | Empty, will run all tests.                     |
 
 ### Run the tests as a Sonobuoy plugin

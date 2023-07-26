@@ -19,6 +19,7 @@ package testcases
 import (
 	"bufio"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -75,6 +76,11 @@ func (o *OpTestCase) RunTest(testCtx *TestContext, idx int) error {
 		}
 		args = append(args, "--ginkgo.skip")
 		args = append(args, skip)
+	}
+
+	if testCtx.Verbose {
+		args = append(args, "--ginkgo.v")
+		args = append(args, "--ginkgo.trace")
 	}
 
 	cmd := exec.Command(testCtx.E2EBinary, args...)

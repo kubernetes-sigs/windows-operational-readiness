@@ -19,7 +19,6 @@ package testcases
 import (
 	"bufio"
 	"encoding/xml"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"

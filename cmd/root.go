@@ -43,14 +43,14 @@ func NewLoggerConfig(options ...zap.Option) *zap.Logger {
 }
 
 var (
-	E2EBinary  string
-	provider   string
-	testFile   string
-	kubeConfig string
-	dryRun     bool
-	verbose    bool
-	reportDir  string
-	categories flags.ArrayFlags
+	E2EBinary     string
+	provider      string
+	testDirectory string
+	kubeConfig    string
+	dryRun        bool
+	verbose       bool
+	reportDir     string
+	categories    flags.ArrayFlags
 
 	rootCmd = &cobra.Command{
 		Use:   "op-readiness",
@@ -59,24 +59,36 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			zap.ReplaceGlobals(NewLoggerConfig())
 
-			opTestConfig, err := testcases.NewOpTestConfig(testFile)
+			specs, err := testcases.NewOpTestConfig(testDirectory)
 			if err != nil {
 				zap.L().Error(fmt.Sprintf("Create op-readiness context failed, error is %v", zap.Error(err)))
 				os.Exit(1)
 			}
-			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, opTestConfig, dryRun, verbose, reportDir, categories)
+			testCtx := testcases.NewTestContext(E2EBinary, kubeConfig, provider, specs, dryRun, verbose, reportDir, categories)
 
-			for idx, t := range opTestConfig.OpTestCases {
-				if !testCtx.CategoryEnabled(t.Category) {
-					zap.L().Warn(fmt.Sprintf("[%s] %v / %v - Skipping Operational Readiness Test: %v", t.Category, idx+1, len(opTestConfig.OpTestCases), t.Description))
-					continue
-				}
-
-				zap.L().Info(fmt.Sprintf("[%s] %v / %v - Running Operational Readiness Test: %v", t.Category, idx+1, len(opTestConfig.OpTestCases), t.Description))
-				if err = t.RunTest(testCtx, idx+1); err != nil {
-					zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
+			targetedSpecs := make([]testcases.Specification, 0)
+			for _, s := range specs {
+				if !testCtx.CategoryEnabled(s.Category) {
+					zap.L().Info(fmt.Sprintf("[OpReadinessTests] Skipping Ops Readiness Tests for %s because specification was not specified in category filter", s.Category))
+				} else {
+					targetedSpecs = append(targetedSpecs, s)
 				}
 			}
+
+			for sIdx, s := range targetedSpecs {
+				zap.L().Info(fmt.Sprintf("[OpReadinessTests] %d / %d Specifications - Running %d Test(s) for Ops Readiness specification: %v", sIdx+1, len(targetedSpecs), len(s.TestCases), s.Category))
+				if len(s.TestCases) == 0 {
+					zap.L().Info(fmt.Sprintf("[%s] No Operational Readiness tests to run", string(s.Category)))
+				} else {
+					for tIdx, t := range s.TestCases {
+						zap.L().Info(fmt.Sprintf("[%s] %v / %v Tests - Running Operational Readiness test: %v", s.Category, tIdx+1, len(s.TestCases), t.Description))
+						if err = t.RunTest(testCtx, tIdx+1); err != nil {
+							zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
+						}
+					}
+				}
+			}
+			zap.L().Info("[OpReadinessTests] Completed running Ops Readiness tests")
 		},
 	}
 )
@@ -93,7 +105,7 @@ func getEnvOrDefault(key, defaultString string) string {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&testFile, "test-file", "testcases.yaml", "Path to YAML file containing the tests.")
+	rootCmd.PersistentFlags().StringVar(&testDirectory, "test-directory", "", "Path to YAML root directory containing the tests.")
 	rootCmd.PersistentFlags().StringVar(&E2EBinary, "e2e-binary", "./e2e.test", "The E2E Ginkgo default binary used to run the tests.")
 	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, aws, local, skeleton, etc.)")
 	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")

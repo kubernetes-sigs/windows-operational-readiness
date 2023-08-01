@@ -1,0 +1,34 @@
+category: Extend.HostProcess
+testCases:
+# - description: Ability to access the APIServer using pod mounted service accounts
+#     from a hostProcess pod.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to create and manage host level networking (hcn) rules from
+#     a Windows hostProcess pod.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to launch hostProcess containers which share the IP address   of a Windows node.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to launch hostProcess containers which can run other privileged Windows system API (to be specified further in the future).
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: 'Ability for pods to bind to host network interfaces on windows (requires hostProcess pods for scheduling the pod itself).'
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: 'Ability for nodes to continue participating in a K8s cluster after rebooting (requires hostProcess pods for testing).'
+#   focus:
+#   - ''
+#   skip:
+#   - ''

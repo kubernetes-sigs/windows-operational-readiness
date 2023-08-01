@@ -1,0 +1,30 @@
+category: Core.Storage
+testCases:
+  # - description: Ability to reboot all of the Windows nodes in a cluster while running
+  #     Windows pods, in such a way that recovery of these deleted pods occurs in the
+  #     scope of a few minutes.
+  #   focus:
+  #   - ''
+  #   skip:
+  #   - ''
+  - description: Ability to mount a hostPath storage volume from a Kubelet into a pod and read from it.
+    focus:
+      - 'should support r/w'
+    skip:
+      - ''
+  - description: Ability to mount a hostPath storage volume from a Kubelet into a pod and write to it.
+    focus:
+      - 'should support r/w'
+    skip:
+      - ''
+  - description: Ability to mount host volumes. (Secrets/Projected Secrets/ConfigMap/Projected ConfigMap)
+    focus:
+      - 'should be consumable from pods in volume \[NodeConformance\]'
+    skip:
+      - ''
+  - description: Ability to read and write shared files on a single Kubernetes node
+      between three running Windows containers, simultaneously.
+    focus:
+      - 'should propagate mounts within defined scopes'
+    skip:
+      - ''

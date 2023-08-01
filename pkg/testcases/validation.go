@@ -19,34 +19,35 @@ package testcases
 import (
 	"fmt"
 
-	validator "github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
 // validateYAML validate the input YAML and returns the error.
-func (o *OpTestConfig) validateYAML() error {
+func (s *Specification) validateYAML() error {
 	validate := validator.New()
-	validate.RegisterStructValidation(OpTestConfigValidation, OpTestConfig{})
-	if err := validate.Struct(o); err != nil {
+	validate.RegisterStructValidation(SpecificationValidation, Specification{})
+	if err := validate.Struct(s); err != nil {
 		return err
 	}
 	return nil
 }
 
-// OpTestConfigValidation set the required fields and is used by the validator function.
-func OpTestConfigValidation(sl validator.StructLevel) {
-	opTestConfig := sl.Current().Interface().(OpTestConfig)
-	for _, opTestCase := range opTestConfig.OpTestCases {
-		if opTestCase.Category == "" {
-			fmt.Println("Category Required")
-			sl.ReportError(opTestCase.Category, "category", "Category", "categoryRequired", "")
+// SpecificationValidation set the required fields and is used by the validator function.
+func SpecificationValidation(sl validator.StructLevel) {
+	specification := sl.Current().Interface().(Specification)
+	if specification.Category == "" {
+		zap.L().Error(fmt.Sprintf("Category Required"))
+		sl.ReportError(specification.Category, "category", "Category", "categoryRequired", "")
+	}
+	for _, testCase := range specification.TestCases {
+		if testCase.Description == "" {
+			zap.L().Error("Description Required")
+			sl.ReportError(testCase.Description, "description", "Description", "descriptionRequired", "")
 		}
-		if opTestCase.Description == "" {
-			fmt.Println("Description Required")
-			sl.ReportError(opTestCase.Description, "description", "Description", "descriptionRequired", "")
-		}
-		if len(opTestCase.Focus) == 0 || (len(opTestCase.Focus) == 1 && len(opTestCase.Focus[0]) == 0) {
-			fmt.Println("Focus Required")
-			sl.ReportError(opTestCase.Focus, "focus", "Focus", "focusRequired", "")
+		if len(testCase.Focus) == 0 || (len(testCase.Focus) == 1 && len(testCase.Focus[0]) == 0) {
+			zap.L().Error("Focus Required")
+			sl.ReportError(testCase.Focus, "focus", "Focus", "focusRequired", "")
 		}
 	}
 }

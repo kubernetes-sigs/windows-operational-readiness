@@ -26,63 +26,40 @@ import (
 	"strconv"
 
 	"go.uber.org/zap"
+
 	"sigs.k8s.io/windows-operational-readiness/pkg/report"
 )
 
-type OpTestCase struct {
-	Category           string   `yaml:"category,omitempty"`
-	Focus              []string `yaml:"focus,omitempty"`
-	Skip               []string `yaml:"skip,omitempty"`
-	KubernetesVersions []string `yaml:"kubernetesVersions,omitempty"`
-	WindowsPodImage    string   `yaml:"windows_image,omitempty"`
-	LinuxPodImage      string   `yaml:"linux_image,omitempty"`
-	Description        string   `yaml:"description,omitempty"`
+type Specification struct {
+	Category  Category   `yaml:"category,omitempty"`
+	TestCases []TestCase `yaml:"testCases,omitempty"`
 }
 
+type TestCase struct {
+	Description        string   `yaml:"description,omitempty"`
+	Focus              []string `yaml:"focus,omitempty"`
+	Skip               []string `yaml:"skip,omitempty"`
+	KubernetesVersions []string `yaml:"kubernetesVersions,omitempty"` // TODO: If versions are specified, only run tests against specified versions
+}
+
+type Category string
+
+const (
+	CoreNetwork           Category = "Core.Network"
+	CoreStorage           Category = "Core.Storage"
+	CoreScheduling        Category = "Core.Scheduling"
+	CoreConcurrent        Category = "Core.Concurrent"
+	ExtendHostProcess     Category = "Extend.HostProcess"
+	ExtendActiveDirectory Category = "Extend.ActiveDirectory"
+	ExtendNetworkPolicy   Category = "Extend.NetworkPolicy"
+	ExtendNetwork         Category = "Extend.Network"
+	ExtendWorker          Category = "Extend.Worker"
+)
+
 // RunTest runs the binary set in the test context with the parameters from flags.
-func (o *OpTestCase) RunTest(testCtx *TestContext, idx int) error {
-	args := []string{
-		"--provider", testCtx.Provider,
-		"--kubeconfig", testCtx.KubeConfig,
-		"--report-dir", testCtx.ReportDir,
-		"--report-prefix", strconv.Itoa(idx),
-		"--node-os-distro", "windows",
-		"--non-blocking-taints", "os,node-role.kubernetes.io/master,node-role.kubernetes.io/control-plane",
-		"--ginkgo.flakeAttempts", "1",
-	}
+func (t *TestCase) RunTest(testCtx *TestContext, idx int) error {
+	cmd := buildCmd(t, testCtx, idx)
 
-	if testCtx.DryRun {
-		args = append(args, "--ginkgo.dryRun")
-	}
-
-	if len(o.Focus) > 0 {
-		focus := o.Focus[0]
-		for k, f := range o.Focus {
-			if k > 0 {
-				focus = focus + "|" + f
-			}
-		}
-		args = append(args, "--ginkgo.focus")
-		args = append(args, focus)
-	}
-
-	if len(o.Skip) > 0 {
-		skip := o.Skip[0]
-		for k, s := range o.Skip {
-			if k > 0 {
-				skip = skip + "|" + s
-			}
-		}
-		args = append(args, "--ginkgo.skip")
-		args = append(args, skip)
-	}
-
-	if testCtx.Verbose {
-		args = append(args, "--ginkgo.v")
-		args = append(args, "--ginkgo.trace")
-	}
-
-	cmd := exec.Command(testCtx.E2EBinary, args...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
@@ -113,6 +90,51 @@ func (o *OpTestCase) RunTest(testCtx *TestContext, idx int) error {
 		}
 	}
 	return nil
+}
+
+func buildCmd(t *TestCase, testCtx *TestContext, idx int) *exec.Cmd {
+	args := []string{
+		"--provider", testCtx.Provider,
+		"--kubeconfig", testCtx.KubeConfig,
+		"--report-dir", testCtx.ReportDir,
+		"--report-prefix", strconv.Itoa(idx),
+		"--node-os-distro", "windows",
+		"--non-blocking-taints", "os,node-role.kubernetes.io/master,node-role.kubernetes.io/control-plane",
+		"--ginkgo.flakeAttempts", "1",
+	}
+
+	if testCtx.DryRun {
+		args = append(args, "--ginkgo.dryRun")
+	}
+
+	if testCtx.Verbose {
+		args = append(args, "--ginkgo.v")
+		args = append(args, "--ginkgo.trace")
+	}
+
+	if len(t.Focus) > 0 {
+		focus := t.Focus[0]
+		for k, f := range t.Focus {
+			if k > 0 {
+				focus = focus + "|" + f
+			}
+		}
+		args = append(args, "--ginkgo.focus")
+		args = append(args, focus)
+	}
+
+	if len(t.Skip) > 0 {
+		skip := t.Skip[0]
+		for k, s := range t.Skip {
+			if k > 0 {
+				skip = skip + "|" + s
+			}
+		}
+		args = append(args, "--ginkgo.skip")
+		args = append(args, skip)
+	}
+
+	return exec.Command(testCtx.E2EBinary, args...)
 }
 
 // CleanupJUnitXML removes unnecessary skipped tests from the report.

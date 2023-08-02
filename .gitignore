@@ -1,4 +1,5 @@
-.idea
+# IDE
+.idea/
 
 # Kubernetes source code folder
 kubernetes/
@@ -7,6 +8,7 @@ kubernetes/
 main
 op-readiness
 e2e.test
+test.tar.gz
 
 # Sonobuoy results
 sonobuoy-results/

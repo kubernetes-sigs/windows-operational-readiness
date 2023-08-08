@@ -1,0 +1,18 @@
+category: Core.Concurrent
+testCases:
+# Core Concurrent
+# - description: Ability to reschedule a deployment Pod, 50 times in a row, with continuous deletions in the background.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to route traffic to 10 pods behind a common ClusterIP service endpoint.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to route traffic to 10 pods behind a common NodePort service endpoint.
+#   focus:
+#   - ''
+#   skip:
+#   - ''

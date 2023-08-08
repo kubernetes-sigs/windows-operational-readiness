@@ -1,0 +1,12 @@
+category: Core.Scheduling
+testCases:
+# - description: Ability to schedule pods with CPU and Memory limits demonstrably honored over time.
+#   focus:
+#   - ''
+#   skip:
+#   - ''
+# - description: Ability to demonstrate the pods requesting more CPU and Memory then available are left in the Pending state over time.
+#   focus:
+#   - ''
+#   skip:
+#   - ''

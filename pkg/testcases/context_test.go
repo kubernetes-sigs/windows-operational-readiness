@@ -43,7 +43,7 @@ func TestConfigurationValidation(t *testing.T) {
 	for _, tt := range tests {
 		// Save the category field globally
 		ctx := TestContext{Categories: tt.categories}
-		answer := ctx.CategoryEnabled(tt.category)
+		answer := ctx.CategoryEnabled(Category(tt.category))
 
 		if answer != tt.answerWant {
 			t.Errorf("got %t, want %t", answer, tt.answerWant)

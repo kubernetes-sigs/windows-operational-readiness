@@ -99,6 +99,7 @@ You can specify the following arguments as part of the command to run the tests.
 | `--dry-run`    | Do not run actual tests, used for sanity check.                                                                                                   | `false`                                        |
 | `--verbose`    | Enable Ginkgo verbosity.                                                                                                                          | `false`                                        |
 | `--category`   | Specify a category with tests you want to run. You can specify multiple categories e.g. `--category=Core.Network --category=Extend.NetworkPolicy` | Empty, will run all tests.                     |
+| `--test-dir`   | Path to where to retrieve the test cases from.                                                                                                    | `specifications/`                              |
 
 ### Run the tests as a Sonobuoy plugin
 
@@ -182,7 +183,7 @@ If you want to test your changes on upstream, use the following bot commmand:
 #### Customizing the test suite
 
 You can customize the test suite to specify your own windows cluster's readiness workflows.
-You can do this by updating the testcases.yaml file.
+You can do this by updating the spec.yaml file under the respective folder in the  `specifications/` folder
 
 ## Community, discussion, contribution, and support
 

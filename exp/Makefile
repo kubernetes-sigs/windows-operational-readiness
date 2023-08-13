@@ -1,4 +1,4 @@
-DOCKER_IMAGE="docker.io/library/golang:1.18.3"
+DOCKER_IMAGE="docker.io/library/golang:1.21.0"
 REPO="docker.io/winopreadiness/rextension:dev"
 
 .PHONY=build

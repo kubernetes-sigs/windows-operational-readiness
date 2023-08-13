@@ -26,7 +26,6 @@ import (
 	"strconv"
 
 	"go.uber.org/zap"
-
 	"sigs.k8s.io/windows-operational-readiness/pkg/report"
 )
 
@@ -167,10 +166,8 @@ func CleanupJUnitXML(path string) error {
 	if cleanContent, err = xml.MarshalIndent(testSuites, "  ", "    "); err != nil {
 		return err
 	}
-	if err = writeFileContent(path, cleanContent); err != nil {
-		return err
-	}
-	return nil
+
+	return writeFileContent(path, cleanContent)
 }
 
 // writeFileContent save the content to a file.

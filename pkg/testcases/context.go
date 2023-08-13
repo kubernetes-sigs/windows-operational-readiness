@@ -24,7 +24,6 @@ import (
 
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
-
 	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
 )
 
@@ -101,7 +100,7 @@ func getTestFiles(testDirectory string) ([]string, error) {
 			return nil, err
 		}
 
-		testDirectory = testDirectory + "/specifications/"
+		testDirectory += "/specifications/"
 	}
 
 	testFiles := make([]string, 0)

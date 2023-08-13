@@ -17,8 +17,6 @@ limitations under the License.
 package testcases
 
 import (
-	"fmt"
-
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 )
@@ -27,17 +25,14 @@ import (
 func (s *Specification) validateYAML() error {
 	validate := validator.New()
 	validate.RegisterStructValidation(SpecificationValidation, Specification{})
-	if err := validate.Struct(s); err != nil {
-		return err
-	}
-	return nil
+	return validate.Struct(s)
 }
 
 // SpecificationValidation set the required fields and is used by the validator function.
 func SpecificationValidation(sl validator.StructLevel) {
 	specification := sl.Current().Interface().(Specification)
 	if specification.Category == "" {
-		zap.L().Error(fmt.Sprintf("Category Required"))
+		zap.L().Error("Category Required")
 		sl.ReportError(specification.Category, "category", "Category", "categoryRequired", "")
 	}
 	for _, testCase := range specification.TestCases {

@@ -3,8 +3,6 @@ linters:
   enable:
   - asciicheck
   - bodyclose
-  - deadcode
-  - depguard
   - dogsled
   - errcheck
   - exportloopref
@@ -19,7 +17,6 @@ linters:
   - gosec
   - gosimple
   - govet
-  - ifshort
   - importas
   - ineffassign
   - misspell
@@ -32,16 +29,15 @@ linters:
   - revive
   - rowserrcheck
   - staticcheck
-  - structcheck
   - stylecheck
   - thelper
   - typecheck
   - unconvert
   - unparam
   - unused
-  - varcheck
   - whitespace
-
+disable:
+  - depguard # Disabling because it is causing CI to break. See issue https://github.com/golangci/golangci-lint/issues/3906 fore more
 run:
   skip-files:
   - "kubernetes/.*"

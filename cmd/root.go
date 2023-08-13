@@ -24,7 +24,6 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"k8s.io/client-go/tools/clientcmd"
-
 	"sigs.k8s.io/windows-operational-readiness/pkg/flags"
 	"sigs.k8s.io/windows-operational-readiness/pkg/testcases"
 )

@@ -80,9 +80,12 @@ var (
 					zap.L().Info(fmt.Sprintf("[%s] No Operational Readiness tests to run", string(s.Category)))
 				} else {
 					for tIdx, t := range s.TestCases {
-						zap.L().Info(fmt.Sprintf("[%s] %v / %v Tests - Running Operational Readiness test: %v", s.Category, tIdx+1, len(s.TestCases), t.Description))
+						logPrefix := fmt.Sprintf("[%s] %v / %v Tests - ", s.Category, tIdx+1, len(s.TestCases))
+						zap.L().Info(fmt.Sprintf("%sRunning Operational Readiness Test: %v", logPrefix, t.Description))
 						if err = t.RunTest(testCtx, tIdx+1); err != nil {
-							zap.L().Error(fmt.Sprintf("Operational Readiness Test %v failed, error is %v", t.Description, zap.Error(err)))
+							zap.L().Error(fmt.Sprintf("%sFailed Operational Readiness Test: %v, error is %v", logPrefix, t.Description, zap.Error(err)))
+						} else {
+							zap.L().Info(fmt.Sprintf("%sPassed Operational Readiness Test: %v", logPrefix, t.Description))
 						}
 					}
 				}

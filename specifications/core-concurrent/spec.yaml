@@ -16,3 +16,8 @@ testCases:
 #   - ''
 #   skip:
 #   - ''
+ - description: Ability to schedule 10 pods concurrently
+   focus:
+   - '\[Feature\:Windows\] Density'
+   skip:
+   - ''

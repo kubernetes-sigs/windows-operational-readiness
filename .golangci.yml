@@ -1,46 +1,46 @@
 linters:
   disable-all: true
   enable:
-  - asciicheck
-  - bodyclose
-  - dogsled
-  - errcheck
-  - exportloopref
-  - gci
-  - goconst
-  - gocritic
-  - gocyclo
-  - godot
-  - gofmt
-  - goimports
-  - goprintffuncname
-  - gosec
-  - gosimple
-  - govet
-  - importas
-  - ineffassign
-  - misspell
-  - nakedret
-  - nilerr
-  - noctx
-  - nolintlint
-  - prealloc
-  - predeclared
-  - revive
-  - rowserrcheck
-  - staticcheck
-  - stylecheck
-  - thelper
-  - typecheck
-  - unconvert
-  - unparam
-  - unused
-  - whitespace
+    - asciicheck
+    - bodyclose
+    - dogsled
+    - errcheck
+    - exportloopref
+    - gci
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - gofmt
+    - goimports
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
+    - misspell
+    - nakedret
+    - nilerr
+    - noctx
+    - nolintlint
+    - prealloc
+    - predeclared
+    - revive
+    - rowserrcheck
+    - staticcheck
+    - stylecheck
+    - thelper
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
 disable:
   - depguard # Disabling because it is causing CI to break. See issue https://github.com/golangci/golangci-lint/issues/3906 fore more
 run:
   skip-files:
-  - "kubernetes/.*"
+    - "kubernetes/.*"
   timeout: 5m
 issue:
   max-same-issues: 0

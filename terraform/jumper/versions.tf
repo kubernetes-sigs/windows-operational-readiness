@@ -14,9 +14,5 @@ limitations under the License.
 terraform {
     # Minimum version is 1.5.1, Maximum version is 1.5.4
     # Still use MSL licence
-<<<<<<< HEAD
   required_version = "~> 1.5.0, <= 1.5.4"
-=======
-  required_version = "~> 1.5.0"
->>>>>>> 7d5cff3 (WIP, tf dev cluster for op-red, not working yet....)
 }

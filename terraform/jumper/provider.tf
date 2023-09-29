@@ -29,9 +29,6 @@ terraform {
 
 
 provider "aws" {
-<<<<<<< HEAD
   profile = "windows-readiness"
-=======
->>>>>>> 7d5cff3 (WIP, tf dev cluster for op-red, not working yet....)
   region = "us-east-2"
 }

@@ -14,7 +14,8 @@ limitations under the License.
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = local.name
+  name = "${local.name}-vpc"
+>>>>>>> 7d5cff3 (WIP, tf dev cluster for op-red, not working yet....)
   cidr = local.vpc_cidr
 
   azs             = local.azs
@@ -26,6 +27,32 @@ module "vpc" {
   manage_default_security_group = false
 }
 
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 19.0"
 
+  cluster_name = "${local.name}-cluster"
+  cluster_version = "1.27"
+  cluster_endpoint_public_access  = true
+
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  iam_role_name = "${local.name}-role"
+
+  eks_managed_node_groups = {
+    core_node_group = {
+      // just coredns so t3.large is big enough
+      instance_types = ["t3.large"]
+
+      #ami_type = "BOTTLEROCKET_x86_64"
+      #platform = "bottlerocket"
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 2
+    }
+  }
+}
 
 

@@ -15,7 +15,6 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "${local.name}-vpc"
->>>>>>> 7d5cff3 (WIP, tf dev cluster for op-red, not working yet....)
   cidr = local.vpc_cidr
 
   azs             = local.azs

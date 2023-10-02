@@ -19,11 +19,19 @@ module "vpc" {
 
   azs             = local.azs
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k + 10)]
+
+
 
   create_database_subnet_group  = false
   manage_default_network_acl    = false
   manage_default_route_table    = false
   manage_default_security_group = false
+
+  enable_nat_gateway = true
+  single_nat_gateway  = false
+  one_nat_gateway_per_az = true
+  
 }
 
 module "eks" {

@@ -21,8 +21,6 @@ module "vpc" {
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k + 10)]
 
-
-
   create_database_subnet_group  = false
   manage_default_network_acl    = false
   manage_default_route_table    = false
@@ -60,6 +58,19 @@ module "eks" {
       desired_size = 2
     }
   }
+  self_managed_node_groups = 	{
+    one = {
+      instance_types = "t3.large"
+      min_size = 3
+      max_size = 4
+      desired_size = 2
+      platform = "windows"
+    }
+  }
+  
+  
+
+
 }
 
 

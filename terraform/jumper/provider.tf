@@ -21,7 +21,7 @@ terraform {
 
   backend "s3" {
     bucket = "win-operational-readiness-tf-state"
-    profile = "windows-readiness"
+    // profile = "windows-readiness"
     key = "aws-jumper"
     region = "us-east-2"
   }
@@ -29,6 +29,6 @@ terraform {
 
 
 provider "aws" {
-  profile = "windows-readiness"
+  // profile = "windows-readiness"
   region = "us-east-2"
 }

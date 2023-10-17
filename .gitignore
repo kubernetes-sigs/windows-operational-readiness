@@ -1,14 +1,7 @@
-# IDE
-.idea/
-
-# Kubernetes source code folder
-kubernetes/
-
-# Binary result
-main
-op-readiness
-e2e.test
-test.tar.gz
-
-# Sonobuoy results
-sonobuoy-results/
+# IDE                                                                                                                        
+.idea/                                                                                                                       -                                                                                                                             -# Kubernetes source code folder                                                                                              
+kubernetes/                                                                                                                  -                                                                                                                             -# Binary result                                                                                                              
+main                                                                                                                         -op-readiness                                                                                                                 -e2e.test                                                                                                                     
+test.tar.gz                                                                                                                  -                                                                                                                             -# Sonobuoy results                                                                                                           
+sonobuoy-results/                                                                                                            +terraform/jumper/.terraform.lock.hcl
+terraform/jumper/.terraform.lock.hcl

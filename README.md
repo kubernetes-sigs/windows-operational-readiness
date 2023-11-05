@@ -6,6 +6,7 @@
 * [Windows Operational Readiness](#windows-operational-readiness)
     * [Build the project](#build-the-project)
     * [Run the tests](#run-the-tests)
+        * [Preliminaries](#preliminaries)
         * [Run the tests using the ops-readiness binary](#run-the-tests-using-the-ops-readiness-binary)
         * [Run the tests as a Sonobuoy plugin](#run-the-tests-as-a-sonobuoy-plugin)
         * [Running on CAPZ upstream](#running-on-capz-upstream)
@@ -69,9 +70,27 @@ The following categories exist.
 
 You can run the tests in the following ways.
 
-### Run the tests using the ops-readiness binary
+### Preliminaries
+1. Build the project 
+   - Before running the tests, ensure you have built the project using the previously specified instrunctions regarding how
+to [build the project](#build-the-project).
+2. Implement a webhook to ensure tests are exclusively scheduled on Windows nodes.
+   - For you to reliably target all the Kubernetes e2e tests to be scheduled on a Windows node, you will need to 
+set up a [mutating webhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
+which dynamically adds a `kubernetes.io/os:windows` pod selector to every scheduled pod.
+[`kubernetes.io/os`](https://kubernetes.io/docs/reference/labels-annotations-taints/#kubernetes-io-os) is a well-known
+label which is used to indicate the operating system for the node, so that it can be taken into account by the _kubelet_
+and by the _kube-scheduler_.
+   - The reason it is necessary to add the webhook is to ensure appropriate and successful scheduling of pods on Windows
+     nodes while running the `ops-readiness` tests. Incorrectly scheduling the pods on a different operating system may
+     result in false positives or false negatives in the test results. Some Kubernetes e2e tests do not specify a pod
+     selector and therefore there can be no guarantee that the pods will be scheduled on Windows node when running
+     the `ops-readiness` tests. To reliably run the operational readiness tests on Windows nodes, it is required to
+     configure such a webhook.
+   - To set up your webhook, you can write your own webhook, or repurpose the one provided in this project.
+     See the [webhook README](webhook/README.md) for more instrunctions on how to use the webhook provided in this project.
 
-Before running the tests, ensure you have built the project using hte previously specified instrunctions.
+### Run the tests using the ops-readiness binary
 
 You can run the tests using the following command. This example command will run all the tests in the op-readiness test
 suite.

@@ -61,7 +61,7 @@ module "eks" {
   self_managed_node_groups = 	{
     one = {
       instance_types = "t3.large"
-      min_size = 3
+      min_size = 2
       max_size = 4
       desired_size = 2
       platform = "windows"

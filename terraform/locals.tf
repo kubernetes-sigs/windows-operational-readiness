@@ -12,10 +12,20 @@ limitations under the License.
 */
 
 locals {
-  name   = "${basename(path.cwd)}"
-  region = "eu-east-2"
+  cluster_version = "1.28"
 
-  vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
-}
+  vpc_cidr = "10.0.0.0/16"
 
+  linux_node_group      = "linux-node-group"
+  linux_instance_type   = "t3.medium"
+  windows_node_group    = "windows-node-group"
+  windows_ami_type      = "WINDOWS_CORE_2022_x86_64"
+  windows_instance_type = "t3.large"
+
+  tags = {
+    Cluster    = var.cluster_name
+    GithubRepo = "sigs.k8s.io"
+    GithubOrg  = "windows-operational-readiness"
+  }
+}

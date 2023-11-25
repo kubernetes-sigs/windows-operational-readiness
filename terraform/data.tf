@@ -11,36 +11,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-data "aws_caller_identity" "current" {}
-
 data "aws_availability_zones" "available" {}
 
-data "aws_ami" "ubuntu_2204" {
-
-  owners      = ["099720109477"]
-  name_regex  = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-\\d+"
-
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-
+data "aws_caller_identity" "current" {}

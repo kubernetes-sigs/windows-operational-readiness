@@ -12,7 +12,11 @@ limitations under the License.
 */
 
 terraform {
-    # Minimum version is 1.5.1, Maximum version is 1.5.4
-    # Still use MSL licence
-    required_version = "~> 1.5.0"
+  required_version = ">= 1.1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.26.0"
+    }
+  }
 }

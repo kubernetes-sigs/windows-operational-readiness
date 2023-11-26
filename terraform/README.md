@@ -15,7 +15,7 @@ Under the folder `./terraform` all the resources exists, to initizlie and downlo
 call, terraform with init parameter:
 
 ```shell
-$ terraform init
+$ terraform init -backend false
 
 Initializing the backend...
 Initializing modules...

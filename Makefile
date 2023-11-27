@@ -65,13 +65,14 @@ build:  ## Build the binary using local golang
 ## Container
 ## --------------------------------------
 ##@ container:
-.PHONY: image_build
-image_build: ## Build the container image
+
+.PHONY: image-build
+image-build: ## Build the container image
 	docker build --build-arg KUBERNETES_VERSION=$(KUBERNETES_VERSION) -t $(IMG_PATH):$(TAG) .
 	docker tag $(IMG_PATH):$(TAG) $(IMG_PATH):latest
 
 .PHONY: image_push
-image_push: ## Push the container image to k8s-staging bucket
+image-push: ## Push the container image to k8s-staging bucket
 	docker push $(IMG_PATH):$(TAG)
 	docker push $(IMG_PATH):latest
 
@@ -85,7 +86,7 @@ release-staging: ## Builds and push container image to k8s-staging bucket
 ##@ setup:
 
 .PHONY: local-kind-test
-local-kind-test: image_build ## Run e2e tests with Kind, useful for development mode
+local-kind-test: image-build ## Run e2e tests with Kind, useful for development mode
 	./hack/kind_run.sh ${IMG_REPO} ${IMG_NAME} ${TAG}
 
 ### --------------------------------------

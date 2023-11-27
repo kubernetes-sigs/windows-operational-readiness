@@ -19,7 +19,7 @@ set -o pipefail
 set -x
 
 # todo(knabben) - fetch latest or pass as argument
-KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.24.0"}
+KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.28.0"}
 KUBERNETES_REPO=${KUBERNETES_REPO:-"https://github.com/kubernetes/kubernetes.git"}
 
 if [ $1 != 0 ]; then

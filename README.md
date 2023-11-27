@@ -144,7 +144,7 @@ To retrieve the sonobuoy result:
 make sonobuoy-results
 ```
 
-The failed results are going to be formatted as follow by default:
+The failed results are going to be formatted as follows by default:
 
 ```
 Plugin: op-readiness
@@ -193,7 +193,7 @@ to render a custom `sonobuoy-plugin.yaml` file.
 
 #### Running on CAPZ upstream
 
-If you want to test your changes on upstream, use the following bot commmand:
+If you want to test your changes on upstream, use the following bot command when opening a new PR:
 
 ```shell
 /test operational-tests-capz-windows-2019

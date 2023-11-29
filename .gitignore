@@ -4,4 +4,8 @@ kubernetes/                                                                     
 main                                                                                                                         -op-readiness                                                                                                                 -e2e.test                                                                                                                     
 test.tar.gz                                                                                                                  -                                                                                                                             -# Sonobuoy results                                                                                                           
 sonobuoy-results/                                                                                                            +terraform/jumper/.terraform.lock.hcl
-terraform/jumper/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*terraform.lock*
+*.DS_Store*
+

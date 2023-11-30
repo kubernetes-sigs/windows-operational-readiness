@@ -1,17 +1,16 @@
 ## Create a Windows Cluster
 
-In case you don't have a Windows cluster available, this project gives an option to bootstrap a new cluster
-on AWS (initially) via Terraform using AWS managed clusters with EKS. Other projects exists in
+In case you don't have an Amazon EKS with Windows nodes, this project gives an option to bootstrap a new Amazon EKS cluster. Other projects exists in
 case the user prefer to create the cluster locally with a robust machine, see [here](https://github.com/kubernetes-sigs/sig-windows-dev-tools).
 
 ### Pre-requisites
 
-Terraform >= 1.1.0
+Terraform >= 1.6.x
 AWS Account with proper IAM permissions
 
 ### Initializing modules
 
-Under the folder `./terraform` all the resources exists, to initizlie and download the used modules
+Under the folder `./terraform/aws/eks-windows` all the resources exists, to initizlie and download the used modules
 call, terraform with init parameter:
 
 ```shell
@@ -21,16 +20,12 @@ Initializing the backend...
 Initializing modules...
 
 Initializing provider plugins...
-- Reusing previous version of hashicorp/kubernetes from the dependency lock file
-- Reusing previous version of hashicorp/cloudinit from the dependency lock file
 - Reusing previous version of hashicorp/aws from the dependency lock file
-- Reusing previous version of hashicorp/time from the dependency lock file
+- Reusing previous version of hashicorp/kubernetes from the dependency lock file
 - Reusing previous version of hashicorp/tls from the dependency lock file
-- Using previously-installed hashicorp/tls v4.0.4
-- Using previously-installed hashicorp/kubernetes v2.23.0
-- Using previously-installed hashicorp/cloudinit v2.3.2
-- Using previously-installed hashicorp/aws v5.26.0
-- Using previously-installed hashicorp/time v0.9.1
+- Using previously-installed hashicorp/kubernetes v2.24.0
+- Using previously-installed hashicorp/tls v4.0.5
+- Using previously-installed hashicorp/aws v5.27.0
 
 Terraform has been successfully initialized!
 
@@ -61,9 +56,7 @@ The new infrastructure is created using apply, based on the plan generated the D
 resources created by this module. It includes a EKS cluster with 2 node groups:
 
 1. Linux node group with 3 nodes `t3.medium` using Amazon Linux
-2. Windows node group with 1 node `t3.large` using Windows 2022 Core
-
-Addons are being installed on this clusters by default, kube-proxy, coredns and vpc-cni (with Windows support)
+2. Windows node group with 1 node `t3.medium` using Windows 2022 Core
 
 To start creating, apply your plan with:
 

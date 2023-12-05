@@ -1,21 +1,5 @@
 category: Core.Scheduling
 testCases:
-#  These test(s) is commented out because it requires a pod node selector set on the kubernetes test
-#  - description: Ability to create and update a limit range and ensure that pods adhere to specified Limitranges
-#    focus:
-#      - 'should create a LimitRange with defaults and ensure pod has those defaults applied'
-#    skip:
-#      - ''
-#  - description: Ability to demonstrate the pods requesting more CPU and Memory then available are left in the Pending state over time.
-#    focus:
-#      - 'verify pod overhead is accounted for'
-#    skip:
-#      - ''
-#  - description: Ability to preempt a lower priority pod in favor of scheduling higher priority pod
-#    focus:
-#      - 'validates basic preemption works'
-#    skip:
-#      - ''
   - description: Ability to not exceed pod memory limits and should fail once there isn't enough memory
     focus:
       - '\[Feature\:Windows\] Memory Limits'

@@ -78,7 +78,7 @@ image-push: ## Push the container image to k8s-staging bucket
 
 .PHONY: release-staging
 release-staging: ## Builds and push container image to k8s-staging bucket
-	$(MAKE) image_build image_push
+	$(MAKE) image-build image-push
 
 ### --------------------------------------
 ### Setup

@@ -18,15 +18,10 @@ package testcases
 
 import (
 	"bufio"
-	"encoding/xml"
 	"io"
-	"os"
 	"os/exec"
-	"path"
-	"strconv"
 
 	"go.uber.org/zap"
-	"sigs.k8s.io/windows-operational-readiness/pkg/report"
 )
 
 type Specification struct {
@@ -56,8 +51,8 @@ const (
 )
 
 // RunTest runs the binary set in the test context with the parameters from flags.
-func (t *TestCase) RunTest(testCtx *TestContext, idx int) error {
-	cmd := buildCmd(t, testCtx, idx)
+func (t *TestCase) RunTest(testCtx *TestContext, prefix string) error {
+	cmd := buildCmd(t, testCtx, prefix)
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -76,27 +71,15 @@ func (t *TestCase) RunTest(testCtx *TestContext, idx int) error {
 	redirectOutput(stdout)
 	redirectOutput(stderr)
 
-	if err := cmd.Wait(); err != nil {
-		return err
-	}
-
-	if testCtx.ReportDir != "" && !testCtx.DryRun {
-		fileName := "junit_" + strconv.Itoa(idx) + "01.xml"
-		junitReport := path.Join(testCtx.ReportDir, fileName)
-		zap.L().Info("Cleaning XML files", zap.String("file", fileName), zap.String("path", junitReport))
-		if err := CleanupJUnitXML(junitReport); err != nil {
-			return err
-		}
-	}
-	return nil
+	return cmd.Wait()
 }
 
-func buildCmd(t *TestCase, testCtx *TestContext, idx int) *exec.Cmd {
+func buildCmd(t *TestCase, testCtx *TestContext, prefix string) *exec.Cmd {
 	args := []string{
 		"--provider", testCtx.Provider,
 		"--kubeconfig", testCtx.KubeConfig,
 		"--report-dir", testCtx.ReportDir,
-		"--report-prefix", strconv.Itoa(idx),
+		"--report-prefix", prefix,
 		"--node-os-distro", "windows",
 		"--non-blocking-taints", "os,node-role.kubernetes.io/master,node-role.kubernetes.io/control-plane",
 		"--ginkgo.flakeAttempts", "1",
@@ -134,76 +117,6 @@ func buildCmd(t *TestCase, testCtx *TestContext, idx int) *exec.Cmd {
 	}
 
 	return exec.Command(testCtx.E2EBinary, args...)
-}
-
-// CleanupJUnitXML removes unnecessary skipped tests from the report.
-func CleanupJUnitXML(path string) error {
-	zap.L().Info("Getting XML content from file", zap.String("path", path))
-	content, err := getXMLContent(path)
-	if err != nil {
-		return err
-	}
-
-	var testSuites report.TestSuites
-	if err = xml.Unmarshal(content, &testSuites); err != nil {
-		return err
-	}
-	for i, suite := range testSuites.Suites {
-		var cleanTests []report.TestCase
-		for _, test := range suite.TestCases {
-			if test.Status != report.StatusSkipped &&
-				test.Name != "[SynchronizedBeforeSuite]" &&
-				test.Name != "[SynchronizedAfterSuite]" &&
-				test.Name != "[ReportAfterSuite] Kubernetes e2e suite report" {
-				cleanTests = append(cleanTests, test)
-			}
-		}
-		testSuites.Suites[i].TestCases = cleanTests
-		zap.L().Info("Saving cleaned tests.", zap.Int("number", len(cleanTests)))
-	}
-	// write back the cleaned up YAML to a writer
-	var cleanContent []byte
-	if cleanContent, err = xml.MarshalIndent(testSuites, "  ", "    "); err != nil {
-		return err
-	}
-
-	return writeFileContent(path, cleanContent)
-}
-
-// writeFileContent save the content to a file.
-func writeFileContent(path string, content []byte) error {
-	file, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	if _, err = file.Write(content); err != nil {
-		return err
-	}
-	return nil
-}
-
-// getXMLContent returns the content in bytes of an existent file.
-func getXMLContent(path string) ([]byte, error) {
-	var err error
-	// check if file exists
-	if _, err = os.Stat(path); os.IsNotExist(err) {
-		return []byte{}, err
-	}
-
-	var file *os.File
-	if file, err = os.Open(path); err != nil {
-		return []byte{}, err
-	}
-	defer file.Close()
-
-	var content []byte
-	if content, err = io.ReadAll(file); err != nil {
-		return []byte{}, err
-	}
-
-	return content, nil
 }
 
 func redirectOutput(stdout io.ReadCloser) {

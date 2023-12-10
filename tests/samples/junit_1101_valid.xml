@@ -1,0 +1,5 @@
+  <testsuites category="Core.Concurrent" name="Ability to schedule 10 pods concurrently" tests="7391" disabled="7386" errors="0" failures="0" time="22.44">
+      <testsuite name="Kubernetes e2e suite" package="/home/aknabben/go/src/sigs.k8s.io/windows-operational-readiness" index="1" tests="7391" disabled="0" errors="0" failures="0" time="22.44">
+          <testcase name="[It] [sig-windows] [Feature:Windows] Density [Serial] [Slow] create a batch of pods latency/resource should be within limit when create 10 pods with 0s interval" classname="Kubernetes e2e suite" time="18.140873066" status="passed"></testcase>
+      </testsuite>
+  </testsuites>

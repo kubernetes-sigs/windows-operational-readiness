@@ -61,6 +61,11 @@ build:  ## Build the binary using local golang
 	./hack/build_k8s_test_binary.sh ${KUBERNETES_HASH}
 	go build -o ./op-readiness .
 
+.PHONY: test
+test:  ## Run the Sonobuoy plugin
+	pushd tests; ginkgo run -v; popd
+
+
 ## --------------------------------------
 ## Container
 ## --------------------------------------

@@ -13,7 +13,7 @@ const (
 	StatusError   Status = "error"
 )
 
-type TestCounter struct {
+type Counters struct {
 	Tests    string `xml:"tests,attr"`
 	Disabled string `xml:"disabled,attr"`
 	Errors   string `xml:"errors,attr"`
@@ -22,9 +22,12 @@ type TestCounter struct {
 }
 
 type TestSuites struct {
-	XMLName xml.Name `xml:"testsuites"`
-	Suites  []Suite  `xml:"testsuite"`
-	TestCounter
+	XMLName  xml.Name `xml:"testsuites"`
+	Suites   []Suite  `xml:"testsuite"`
+	Category string   `xml:"category,attr"`
+	Name     string   `xml:"name,attr"`
+
+	Counters
 }
 
 // Suite represents a logical grouping (suite) of tests.
@@ -32,8 +35,10 @@ type Suite struct {
 	XMLName   xml.Name   `xml:"testsuite"`
 	Name      string     `xml:"name,attr"`
 	Package   string     `xml:"package,attr"`
+	Index     string     `xml:"index,attr"`
 	TestCases []TestCase `xml:"testcase,omitempty"`
-	TestCounter
+
+	Counters
 }
 
 // TestCase represents the results of a single test run.

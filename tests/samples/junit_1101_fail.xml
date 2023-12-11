@@ -1,0 +1,8 @@
+  <testsuites category="Core.Concurrent" name="Ability to schedule 10 pods concurrently" tests="7391" disabled="7386" errors="0" failures="1" time="34.75">
+      <testsuite name="Kubernetes e2e suite" package="/home/aknabben/go/src/sigs.k8s.io/windows-operational-readiness" index="1" tests="7391" disabled="0" errors="0" failures="1" time="34.75">
+          <testcase name="[It] [sig-windows] [Feature:Windows] Density [Serial] [Slow] create a batch of pods latency/resource should be within limit when create 10 pods with 0s interval" classname="Kubernetes e2e suite" time="30.594121024" status="failed">
+              <failure type="failed"></failure>
+              <system-err>&gt; Enter [BeforeEach] [sig-windows] [Feature:Windows] Density [Serial] [Slow] Density [Serial] [Slow] - dump namespaces | framework.go:218 @ 12/10/23 18:35:52.337 (14.239s)&#xA;&gt; Enter [DeferCleanup (Each)] [sig-windows] [Feature:Windows] Density [Serial] [Slow] - tear down framework | framework.go:215 @ 12/10/23 18:35:52.337&#xA;STEP: Destroying namespace &#34;density-test-windows-2761&#34; for this suite. - test/e2e/framework/framework.go:360 @ 12/10/23 18:35:52.337&#xA;&lt; Exit [DeferCleanup (Each)] [sig-windows] [Feature:Windows] Density [Serial] [Slow] - tear down framework | framework.go:215 @ 12/10/23 18:35:52.589 (252ms)&#xA;&gt; Enter [ReportAfterEach] TOP-LEVEL - test/e2e/e2e_test.go:149 @ 12/10/23 18:35:52.589&#xA;&lt; Exit [ReportAfterEach] TOP-LEVEL - test/e2e/e2e_test.go:149 @ 12/10/23 18:35:52.589 (0s)&#xA;</system-err>
+          </testcase>
+      </testsuite>
+  </testsuites>

@@ -1,4 +1,4 @@
-[![Unit Test](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/unit-tests.yml)
+[![unit-tests](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/tests.yml/badge.svg)](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/tests.yml)
 [![Linter](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/kubernetes-sigs/windows-operational-readiness/actions/workflows/golangci-lint.yml)
 
 # Windows Operational Readiness

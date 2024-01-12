@@ -19,8 +19,6 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"strconv"
-	"strings"
 
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/windows-operational-readiness/pkg/report"
@@ -28,8 +26,7 @@ import (
 
 var (
 	directory string
-	failed    int
-	passed    int
+	csv       bool
 )
 
 var reporterCmd = &cobra.Command{
@@ -41,41 +38,11 @@ var reporterCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, n := range suites {
-			presentTestSuite(n)
-		}
-		fmt.Printf("Passed tests: %d\n", passed)
-		fmt.Printf("Failed tests: %d\n", failed)
+		fmt.Println(report.RenderReportTable(csv, suites))
 	},
 }
 
 func init() {
-	reporterCmd.Flags().StringVar(&directory, "dir", "", "directory to search in for xml files")
-}
-
-func presentTestSuite(r *report.TestSuites) {
-	for _, t := range r.Suites {
-		if len(t.TestCases) == 0 {
-			ftime, err := strconv.ParseFloat(t.Time, 32)
-			if err != nil {
-				continue
-			}
-			fmt.Printf("[FAILED] | %s - %s | (%2.2fs) | %s\n", t.Index, r.Category, ftime, r.Name)
-			failed++
-		}
-
-		for _, c := range t.TestCases {
-			ftime, err := strconv.ParseFloat(c.Time, 32)
-			if err != nil {
-				continue
-			}
-			fmt.Printf("[%s] | %s - %s | (%2.2fs) | %s | %s\n", strings.ToUpper(string(c.Status)), t.Index, r.Category, ftime, r.Name, c.Name)
-			if c.Status == report.StatusPassed {
-				passed++
-			}
-			if c.Status == report.StatusFailed {
-				failed++
-			}
-		}
-	}
+	reporterCmd.Flags().StringVar(&directory, "dir", "", "directory to search in for xml files.")
+	reporterCmd.Flags().BoolVar(&csv, "csv", false, "return the table as CSV.")
 }

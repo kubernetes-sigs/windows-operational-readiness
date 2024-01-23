@@ -20,6 +20,7 @@ import (
 	"bufio"
 	"io"
 	"os/exec"
+	"sync"
 
 	"go.uber.org/zap"
 )
@@ -68,9 +69,13 @@ func (t *TestCase) RunTest(testCtx *TestContext, prefix string) error {
 		return err
 	}
 
-	redirectOutput(stdout)
-	redirectOutput(stderr)
+	var wg sync.WaitGroup
+	wg.Add(1)
 
+	go redirectOutput(&wg, stdout)
+	redirectOutput(nil, stderr)
+
+	wg.Wait()
 	return cmd.Wait()
 }
 
@@ -119,11 +124,17 @@ func buildCmd(t *TestCase, testCtx *TestContext, prefix string) *exec.Cmd {
 	return exec.Command(testCtx.E2EBinary, args...)
 }
 
-func redirectOutput(stdout io.ReadCloser) {
+func redirectOutput(wg *sync.WaitGroup, stdout io.ReadCloser) {
+	if wg != nil {
+		defer wg.Done()
+	}
 	scanner := bufio.NewScanner(stdout)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		m := scanner.Text()
 		zap.L().Info(m)
+	}
+	if err := scanner.Err(); err != nil {
+		zap.L().Error(err.Error())
 	}
 }

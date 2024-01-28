@@ -33,7 +33,7 @@ import (
 func init() {
 	rootCmd.PersistentFlags().StringVar(&testDirectory, "test-directory", "", "Path to YAML root directory containing the tests.")
 	rootCmd.PersistentFlags().StringVar(&E2EBinary, "e2e-binary", "./e2e.test", "The E2E Ginkgo default binary used to run the tests.")
-	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, aws, local, skeleton, etc.)")
+	rootCmd.PersistentFlags().StringVar(&provider, "provider", "local", "The name of the Kubernetes provider (gce, gke, aws, local, skeleton, azure etc.)")
 	rootCmd.PersistentFlags().StringVar(&kubeConfig, clientcmd.RecommendedConfigPathFlag, os.Getenv(clientcmd.RecommendedConfigPathEnvVar), "Path to kubeconfig containing embedded authinfo.")
 	rootCmd.PersistentFlags().StringVar(&reportDir, "report-dir", getEnvOrDefault("ARTIFACTS", ""), "Report dump directory, uses artifact for CI integration when set.")
 	rootCmd.PersistentFlags().BoolVar(&dryRun, "dry-run", false, "Do not run actual tests, used for sanity check.")
@@ -100,7 +100,19 @@ var (
 					prefix := fmt.Sprintf("%d%d", specIdx+1, testIdx+1)
 					logPrefix := fmt.Sprintf("[%s] %v / %v Tests - ", s.Category, testIdx+1, len(s.TestCases))
 					zap.L().Info(fmt.Sprintf("%sRunning Operational Readiness Test: %v", logPrefix, t.Description))
-					if err = t.RunTest(testCtx, prefix); err != nil {
+
+					var skipProvider = false
+					if len(t.SkipProviders) > 0 {
+						for _, p := range t.SkipProviders {
+							if p == testCtx.Provider {
+								skipProvider = true
+							}
+						}
+					}
+
+					if skipProvider {
+						zap.L().Info(fmt.Sprintf("%sSkipping Operational Readiness Test for Provider %v: %v", logPrefix, provider, t.Description))
+					} else if err = t.RunTest(testCtx, prefix); err != nil {
 						zap.L().Error(fmt.Sprintf("%sFailed Operational Readiness Test: %v, error is %v", logPrefix, t.Description, zap.Error(err)))
 					} else {
 						zap.L().Info(fmt.Sprintf("%sPassed Operational Readiness Test: %v", logPrefix, t.Description))

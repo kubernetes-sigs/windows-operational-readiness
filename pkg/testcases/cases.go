@@ -128,7 +128,11 @@ func redirectOutput(wg *sync.WaitGroup, stdout io.ReadCloser) {
 	if wg != nil {
 		defer wg.Done()
 	}
+	// Increase max buffer size to 1MB to handle long lines and avoid bufio.ErrTooLong errors
+	const maxBufferSize = 1024 * 1024
 	scanner := bufio.NewScanner(stdout)
+	buf := make([]byte, 0, maxBufferSize)
+	scanner.Buffer(buf, maxBufferSize)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		m := scanner.Text()

@@ -11,6 +11,7 @@
         * [Run the tests as a Sonobuoy plugin](#run-the-tests-as-a-sonobuoy-plugin)
         * [Running on CAPZ upstream](#running-on-capz-upstream)
         * [Customizing the test suite](#customizing-the-test-suite)
+        * [Viewing the test output](#viewing-the-test-output)
     * [Community, discussion, contribution, and support](#community-discussion-contribution-and-support)
         * [Code of conduct](#code-of-conduct)
 
@@ -71,24 +72,31 @@ The following categories exist.
 You can run the tests in the following ways.
 
 ### Preliminaries
-1. Build the project 
-   - Before running the tests, ensure you have built the project using the previously specified instrunctions regarding how
-to [build the project](#build-the-project).
+
+1. Build the project
+    - Before running the tests, ensure you have built the project using the previously specified instrunctions regarding
+      how
+      to [build the project](#build-the-project).
 2. Implement a webhook to ensure tests are exclusively scheduled on Windows nodes.
-   - For you to reliably target all the Kubernetes e2e tests to be scheduled on a Windows node, you will need to 
-set up a [mutating webhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
-which dynamically adds a `kubernetes.io/os:windows` pod selector to every scheduled pod.
-[`kubernetes.io/os`](https://kubernetes.io/docs/reference/labels-annotations-taints/#kubernetes-io-os) is a well-known
-label which is used to indicate the operating system for the node, so that it can be taken into account by the _kubelet_
-and by the _kube-scheduler_.
-   - The reason it is necessary to add the webhook is to ensure appropriate and successful scheduling of pods on Windows
-     nodes while running the `ops-readiness` tests. Incorrectly scheduling the pods on a different operating system may
-     result in false positives or false negatives in the test results. Some Kubernetes e2e tests do not specify a pod
-     selector and therefore there can be no guarantee that the pods will be scheduled on Windows node when running
-     the `ops-readiness` tests. To reliably run the operational readiness tests on Windows nodes, it is required to
-     configure such a webhook.
-   - To set up your webhook, you can write your own webhook, or repurpose the one provided in this project.
-     See the [webhook README](webhook/README.md) for more instrunctions on how to use the webhook provided in this project.
+    - For you to reliably target all the Kubernetes e2e tests to be scheduled on a Windows node, you will need to
+      set up
+      a [mutating webhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
+      which dynamically adds a `kubernetes.io/os:windows` pod selector to every scheduled pod.
+      [`kubernetes.io/os`](https://kubernetes.io/docs/reference/labels-annotations-taints/#kubernetes-io-os) is a
+      well-known
+      label which is used to indicate the operating system for the node, so that it can be taken into account by the
+      _kubelet_
+      and by the _kube-scheduler_.
+    - The reason it is necessary to add the webhook is to ensure appropriate and successful scheduling of pods on
+      Windows
+      nodes while running the `ops-readiness` tests. Incorrectly scheduling the pods on a different operating system may
+      result in false positives or false negatives in the test results. Some Kubernetes e2e tests do not specify a pod
+      selector and therefore there can be no guarantee that the pods will be scheduled on Windows node when running
+      the `ops-readiness` tests. To reliably run the operational readiness tests on Windows nodes, it is required to
+      configure such a webhook.
+    - To set up your webhook, you can write your own webhook, or repurpose the one provided in this project.
+      See the [webhook README](webhook/README.md) for more instrunctions on how to use the webhook provided in this
+      project.
 
 ### Run the tests using the ops-readiness binary
 
@@ -203,6 +211,28 @@ If you want to test your changes on upstream, use the following bot command when
 
 You can customize the test suite to specify your own windows cluster's readiness workflows.
 You can do this by updating the spec.yaml file under the respective folder in the  `specifications/` folder
+
+#### Viewing the test output
+
+When running your tests, specify the output directory where the test results will be stored using `--report-dir`
+
+```shell
+./op-readiness --provider=<provider> --kubeconfig=<kubeconfig> --report-dir report/
+```
+
+View the `reporter` using the report subcommand
+
+```shell
+./op-readiness reporter --dir ./report/
+```
+
+You can also export the test results to a CSV file using the `--csv` flag > filename.csv
+
+```shell
+./op-readiness reporter --dir ./report/ --csv
+```
+
+![img](assets/images/reporter_example.png)
 
 ## Community, discussion, contribution, and support
 

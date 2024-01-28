@@ -1,11 +1,20 @@
-# IDE                                                                                                                        
-.idea/                                                                                                                       -                                                                                                                             -# Kubernetes source code folder                                                                                              
-kubernetes/                                                                                                                  -                                                                                                                             -# Binary result                                                                                                              
-main                                                                                                                         -op-readiness                                                                                                                 -e2e.test                                                                                                                     
-test.tar.gz                                                                                                                  -                                                                                                                             -# Sonobuoy results                                                                                                           
-sonobuoy-results/                                                                                                            +terraform/jumper/.terraform.lock.hcl
+# IDE
+.idea/
+
+# Kubernetes source code folder
+kubernetes/
+
+# Binary result
+op-readiness
+test.tar.gz
+*.DS_Store*
+e2e.test
+
+# Sonobuoy results
+sonobuoy-results/
+
+# Terraform
 terraform/*.tfstate
 terraform/*.tfstate.*
 terraform/*terraform.lock*
-*.DS_Store*
-
++terraform/jumper/.terraform.lock.hcl

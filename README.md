@@ -11,6 +11,7 @@
         * [Run the tests as a Sonobuoy plugin](#run-the-tests-as-a-sonobuoy-plugin)
         * [Running on CAPZ upstream](#running-on-capz-upstream)
         * [Customizing the test suite](#customizing-the-test-suite)
+        * [Viewing the test output](#viewing-the-test-output)
     * [Community, discussion, contribution, and support](#community-discussion-contribution-and-support)
         * [Code of conduct](#code-of-conduct)
 
@@ -203,6 +204,28 @@ If you want to test your changes on upstream, use the following bot command when
 
 You can customize the test suite to specify your own windows cluster's readiness workflows.
 You can do this by updating the spec.yaml file under the respective folder in the  `specifications/` folder
+
+#### Viewing the test output
+
+When running your tests, specify the output directory where the test results will be stored using `--report-dir`
+
+```shell
+./op-readiness --provider=<provider> --kubeconfig=<kubeconfig> --report-dir report/
+```
+
+View the `reporter` using the report subcommand
+
+```shell
+./op-readiness reporter --dir ./report/
+```
+
+You can also export the test results to a CSV file using the `--csv` flag > filename.csv
+
+```shell
+./op-readiness reporter --dir ./report/ --csv
+```
+
+![img](assets/images/reporter_example.png)
 
 ## Community, discussion, contribution, and support
 

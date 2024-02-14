@@ -8,8 +8,16 @@ spec:
   args:
   - --e2e-binary
   - /app/e2e.test
+  - --category 
+  - Core.Concurrent
+  - --category 
+  - Core.Scheduling
   - --category
-  - Extend.NetworkPolicy
+  - Core.Storage
+  - --category 
+  - Extend.Network
+  - --category
+  - extend.networkpolicy
   image: gcr.io/k8s-staging-win-op-rdnss/k8s-win-op-rdnss:latest
   name: plugin
   volumeMounts:

@@ -19,10 +19,17 @@ set -o nounset
 set -o pipefail
 set -o xtrace
 
-KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.25.0"}
+KUBERNETES_VERSION=${KUBERNETES_VERSION:-"v1.29.0"}
 
 # build the binary and download tests
 make build
 
 # run existent test outside the cluster
-./op-readiness --category Core.Network --provider=local
+./op-readiness --verbose     \
+  --category Core.Network    \
+  --category Core.Concurrent \
+  --category Core.Scheduling \
+  --category Core.Storage    \
+  --category Extend.Network \
+  --category Extend.NetworkPolicy \
+  --provider=local

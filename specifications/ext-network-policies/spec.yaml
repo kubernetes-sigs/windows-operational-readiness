@@ -1,11 +1,11 @@
 category: Extend.NetworkPolicy
 testCases:
-  # - description: Ability to protect IPv4 pods from accessing other pods when TCP NetworkPolicys
-  #     are present that block specific pod connectivity.
-  #   focus:
-  #   - ''
-  #   skip:
-  #   - ''
+  - description: Ability to protect IPv4 pods from accessing other pods when TCP NetworkPolicys
+      are present that block specific pod connectivity.
+    focus:
+      - 'should enforce policy to allow ingress traffic for a target'
+    skip:
+      - ''
   - description: Ability to protect IPv4 pods from accessing other pods when TCP NetworkPolicys
       are present that block specific namespace connectability.
     focus:

@@ -1,31 +1,14 @@
 category: Extend.Network
 testCases:
-# - description: Ability to support IPv6 and IPv4 services for accessing internal Linux
-#     pods from Windows pods over ClusterIP Endpoints.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
-# - description: Ability to support IPv6 and IPv4 services for accessing internal Linux
-#     pods from Windows pods over NodePort Endpoints.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
-# - description: Ability to support IPv6 and IPv4 services for accessing internal Windows
-#     pods from Linux pods over ClusterIP Endpoints.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
-# - description: Ability to support IPv6 and IPv4 services for accessing internal Windows
-#     pods from Linux pods over NodePort Endpoints.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
-# - description: Ability to run IPv4/IPv6 dual-stack networking (on supported OS Versions)
-#   focus:
-#   - ''
-#   skip:
-#   - ''
+  - description: Ability to support IPv6 and IPv4 services for accessing internal Linux
+      pods from Windows pods over ClusterIP Endpoints.
+    focus:
+    - 'should serve multiport endpoints from pods'
+    skip:
+    - ''
+  - description: Ability to support IPv6 and IPv4 services for accessing internal Linux
+      pods from Windows pods over NodePort Endpoints.
+    focus:
+    - 'should be able to create a functioning NodePort service'
+    skip:
+    - ''

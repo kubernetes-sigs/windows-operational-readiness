@@ -6,16 +6,6 @@ testCases:
 #   - ''
 #   skip:
 #   - ''
-# - description: Ability to route traffic to 10 pods behind a common ClusterIP service endpoint.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
-# - description: Ability to route traffic to 10 pods behind a common NodePort service endpoint.
-#   focus:
-#   - ''
-#   skip:
-#   - ''
  - description: Ability to schedule 10 pods concurrently
    focus:
    - '\[Feature\:Windows\] Density'
